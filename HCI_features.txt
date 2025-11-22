@@ -1,0 +1,19 @@
+HCI / Usability features on Ride Booking screen
+
+Match between system and real world (Nielsen)
+Clear labels “Pick-up”, “Drop-off”, “Cash” instead of technical terms; vehicle options named Bike/Rickshaw/Car with time & price.
+
+Visibility of system status (Nielsen)
+Selected vehicle is highlighted (vehicle-card--selected state) so user always knows which option is active.
+
+Recognition rather than recall (Nielsen)
+Pickup defaults to “Current location”, so user doesn’t have to remember or type it every time.
+
+Fitts’ Law & touch-friendly targets (HCI)
+Large tappable cards for vehicles and a big “Confirm ride” button at bottom – optimized for thumb use on phones.
+
+User control & freedom (Nielsen / Shneiderman)
+Back arrow to go back to Home; users can edit both pickup and drop-off fields before confirming.
+
+Error prevention (Nielsen)
+Separate fields and clear labels reduce risk of mixing pickup/drop-off; “Swap” button avoids retyping when directions are reversed.
