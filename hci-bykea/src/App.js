@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import HomeScreen from "./components/HomeScreen";
 import RideScreen from "./components/RideScreen";
+import PickupScreen from "./components/PickupScreen";
 import "./App.css";
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState("home");
+  const [pickupLocation, setPickupLocation] = useState("Current location");
 
   const renderScreen = () => {
     switch (currentScreen) {
@@ -13,12 +15,28 @@ function App() {
           <HomeScreen
             onSelectService={(service) => {
               if (service === "ride") setCurrentScreen("rides");
-              // later: parcel, cash etc.
             }}
           />
         );
       case "rides":
-        return <RideScreen onBack={() => setCurrentScreen("home")} />;
+        return (
+          <RideScreen
+            pickupLocation={pickupLocation}
+            onBack={() => setCurrentScreen("home")}
+            onEditPickup={() => setCurrentScreen("pickup")}
+          />
+        );
+      case "pickup":
+        return (
+          <PickupScreen
+            selectedPickup={pickupLocation}
+            onBack={() => setCurrentScreen("rides")}
+            onSelectPickup={(loc) => {
+              setPickupLocation(loc);
+              setCurrentScreen("rides");
+            }}
+          />
+        );
       case "wallet":
         return <div className="placeholder-screen">Wallet screen (coming soon)</div>;
       case "profile":
@@ -30,26 +48,21 @@ function App() {
 
   return (
     <div className="app">
-      {/* Top Bar */}
       <header className="app-header">
         <button className="header-icon-button" aria-label="Open menu">
           ☰
         </button>
-
         <div className="header-location">
           <span className="location-label">Current area</span>
           <span className="location-value">Karachi, Pakistan ▾</span>
         </div>
-
         <button className="header-icon-button" aria-label="Call support">
           📞
         </button>
       </header>
 
-      {/* Main Content */}
       <main className="app-main">{renderScreen()}</main>
 
-      {/* Bottom navigation */}
       <nav className="bottom-nav" aria-label="Main navigation">
         <button
           className={`nav-item ${currentScreen === "home" ? "nav-item--active" : ""}`}
@@ -59,7 +72,9 @@ function App() {
           <span className="nav-label">Home</span>
         </button>
         <button
-          className={`nav-item ${currentScreen === "rides" ? "nav-item--active" : ""}`}
+          className={`nav-item ${
+            currentScreen === "rides" || currentScreen === "pickup" ? "nav-item--active" : ""
+          }`}
           onClick={() => setCurrentScreen("rides")}
         >
           <span className="nav-icon">🛵</span>

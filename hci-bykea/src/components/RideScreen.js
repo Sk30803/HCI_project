@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 
-const RideScreen = ({ onBack }) => {
+const RideScreen = ({ onBack, onEditPickup, pickupLocation }) => {
   const [selectedVehicle, setSelectedVehicle] = useState("bike");
 
   return (
     <div className="ride-screen">
-      {/* Top row: back + title */}
       <section className="ride-section ride-header-row">
         <button className="header-icon-button" onClick={onBack} aria-label="Back to home">
           ←
@@ -13,23 +12,19 @@ const RideScreen = ({ onBack }) => {
         <h1 className="ride-title">Book a ride</h1>
       </section>
 
-      {/* Locations */}
       <section className="ride-section">
         <div className="ride-locations">
-          <div className="location-row">
+          <button
+            className="location-row-btn"
+            onClick={onEditPickup}
+            aria-label="Edit pickup location"
+          >
             <span className="location-dot pickup-dot" />
             <div className="location-texts">
               <span className="location-label">Pick-up</span>
-              <input
-                className="location-input"
-                defaultValue="Current location"
-                aria-label="Pickup location"
-              />
+              <span className="location-value-inline">{pickupLocation}</span>
             </div>
-          </div>
-
-          <button className="swap-button" aria-label="Swap locations">
-            ⇅
+            <span className="location-edit">Change</span>
           </button>
 
           <div className="location-row">
@@ -46,79 +41,63 @@ const RideScreen = ({ onBack }) => {
         </div>
       </section>
 
-      {/* Map placeholder */}
-      <section className="ride-section">
-        <div className="map-placeholder">
-          Map preview (for prototype)
-        </div>
-      </section>
+{/* Vehicle options */}
+<section className="ride-section">
+  <h2 className="section-heading">Choose vehicle</h2>
 
-      {/* Vehicle options */}
-      <section className="ride-section">
-        <h2 className="section-heading">Choose vehicle</h2>
-        <div className="vehicle-list">
-          <button
-            className={`vehicle-card ${
-              selectedVehicle === "bike" ? "vehicle-card--selected" : ""
-            }`}
-            onClick={() => setSelectedVehicle("bike")}
-          >
-            <div className="vehicle-main">
-              <span className="vehicle-name">Bike</span>
-              <span className="vehicle-time">3 min away</span>
-            </div>
-            <div className="vehicle-meta">
-              <span className="vehicle-capacity">1 seat • Low cost</span>
-              <span className="vehicle-price">Rs 180</span>
-            </div>
-          </button>
+  {/* Bike */}
+  <button className={`vehicle-card ${selectedVehicle === "bike" ? "vehicle-card--selected" : ""}`}
+    onClick={() => setSelectedVehicle("bike")}
+  >
+    <div className="vehicle-main">
+      <span className="vehicle-name">Bike</span>
+      <span className="vehicle-time">3 min away</span>
+    </div>
+    <div className="vehicle-meta">
+      <span className="vehicle-capacity">1 seat • Low cost</span>
+      <span className="vehicle-price">Rs 180</span>
+    </div>
+  </button>
 
-          <button
-            className={`vehicle-card ${
-              selectedVehicle === "rickshaw" ? "vehicle-card--selected" : ""
-            }`}
-            onClick={() => setSelectedVehicle("rickshaw")}
-          >
-            <div className="vehicle-main">
-              <span className="vehicle-name">Rickshaw</span>
-              <span className="vehicle-time">5 min away</span>
-            </div>
-            <div className="vehicle-meta">
-              <span className="vehicle-capacity">2–3 seats • Covered</span>
-              <span className="vehicle-price">Rs 260</span>
-            </div>
-          </button>
+  {/* Rickshaw */}
+  <button className={`vehicle-card ${selectedVehicle === "rickshaw" ? "vehicle-card--selected" : ""}`}
+    onClick={() => setSelectedVehicle("rickshaw")}
+  >
+    <div className="vehicle-main">
+      <span className="vehicle-name">Rickshaw</span>
+      <span className="vehicle-time">5 min away</span>
+    </div>
+    <div className="vehicle-meta">
+      <span className="vehicle-capacity">2–3 seats • Covered</span>
+      <span className="vehicle-price">Rs 260</span>
+    </div>
+  </button>
 
-          <button
-            className={`vehicle-card ${
-              selectedVehicle === "car" ? "vehicle-card--selected" : ""
-            }`}
-            onClick={() => setSelectedVehicle("car")}
-          >
-            <div className="vehicle-main">
-              <span className="vehicle-name">Car</span>
-              <span className="vehicle-time">7 min away</span>
-            </div>
-            <div className="vehicle-meta">
-              <span className="vehicle-capacity">4 seats • Extra comfort</span>
-              <span className="vehicle-price">Rs 420</span>
-            </div>
-          </button>
-        </div>
-      </section>
+  {/* Car */}
+  <button className={`vehicle-card ${selectedVehicle === "car" ? "vehicle-card--selected" : ""}`}
+    onClick={() => setSelectedVehicle("car")}
+  >
+    <div className="vehicle-main">
+      <span className="vehicle-name">Car</span>
+      <span className="vehicle-time">7 min away</span>
+    </div>
+    <div className="vehicle-meta">
+      <span className="vehicle-capacity">4 seats • Extra comfort</span>
+      <span className="vehicle-price">Rs 420</span>
+    </div>
+  </button>
+</section>
 
-      {/* Payment + confirm */}
-      <section className="ride-section ride-footer">
-        <div className="ride-payment">
-          <span className="payment-label">Payment</span>
-          <button className="payment-method">
-            Cash ▾
-          </button>
-        </div>
-        <button className="ride-confirm-btn">
-          Confirm ride
-        </button>
-      </section>
+{/* Payment + confirm */}
+<section className="ride-section ride-footer">
+  <div className="ride-payment">
+    <span className="payment-label">Payment</span>
+    <button className="payment-method">Cash ▾</button>
+  </div>
+  <button className="ride-confirm-btn">Confirm ride</button>
+</section>
+
+      
     </div>
   );
 };
