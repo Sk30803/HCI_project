@@ -39,13 +39,6 @@ function App() {
         </button>
       </header>
 
-      {/* Safety bar */}
-      <div className="safety-strip">
-        <button className="safety-button primary">SOS</button>
-        <button className="safety-button">Share Trip</button>
-        <button className="safety-button">Help</button>
-      </div>
-
       {/* Main Content */}
       <main className="app-main">{renderScreen()}</main>
 
