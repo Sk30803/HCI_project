@@ -1,6 +1,6 @@
 import React from "react";
 
-const HomeScreen = () => {
+const HomeScreen = ({ onSelectService }) => {
   return (
     <div className="home">
       {/* Greeting */}
@@ -24,7 +24,10 @@ const HomeScreen = () => {
       <section className="home-section">
         <h2 className="section-heading">Main services</h2>
         <div className="quick-actions">
-          <button className="quick-action-card">
+          <button
+            className="quick-action-card"
+            onClick={() => onSelectService && onSelectService("ride")}
+          >
             <span className="quick-action-icon">🛵</span>
             <span className="quick-action-title">Ride</span>
             <span className="quick-action-subtitle">Bike / Rickshaw / Car</span>

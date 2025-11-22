@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import HomeScreen from "./components/HomeScreen";
+import RideScreen from "./components/RideScreen";
 import "./App.css";
 
 function App() {
@@ -8,10 +9,16 @@ function App() {
   const renderScreen = () => {
     switch (currentScreen) {
       case "home":
-        return <HomeScreen />;
-      // we’ll add these screens later
+        return (
+          <HomeScreen
+            onSelectService={(service) => {
+              if (service === "ride") setCurrentScreen("rides");
+              // later: parcel, cash etc.
+            }}
+          />
+        );
       case "rides":
-        return <div className="placeholder-screen">Rides screen (coming soon)</div>;
+        return <RideScreen onBack={() => setCurrentScreen("home")} />;
       case "wallet":
         return <div className="placeholder-screen">Wallet screen (coming soon)</div>;
       case "profile":
@@ -38,13 +45,6 @@ function App() {
           📞
         </button>
       </header>
-
-      {/* Safety bar */}
-      <div className="safety-strip">
-        <button className="safety-button primary">SOS</button>
-        <button className="safety-button">Share Trip</button>
-        <button className="safety-button">Help</button>
-      </div>
 
       {/* Main Content */}
       <main className="app-main">{renderScreen()}</main>
