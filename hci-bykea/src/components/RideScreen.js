@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const RideScreen = ({ onBack, onEditPickup, pickupLocation }) => {
+const RideScreen = ({ onBack, onEditPickup, onEditDropoff, pickupLocation, dropoffLocation }) => {
   const [selectedVehicle, setSelectedVehicle] = useState("bike");
 
   return (
@@ -13,33 +13,39 @@ const RideScreen = ({ onBack, onEditPickup, pickupLocation }) => {
       </section>
 
       <section className="ride-section">
-        <div className="ride-locations">
-          <button
-            className="location-row-btn"
-            onClick={onEditPickup}
-            aria-label="Edit pickup location"
-          >
-            <span className="location-dot pickup-dot" />
-            <div className="location-texts">
-              <span className="location-label">Pick-up</span>
-              <span className="location-value-inline">{pickupLocation}</span>
-            </div>
-            <span className="location-edit">Change</span>
-          </button>
+  <div className="ride-locations">
+    {/* Pick-up row */}
+    <button
+      className="location-row-btn"
+      onClick={onEditPickup}
+      aria-label="Edit pickup location"
+    >
+      <span className="location-dot pickup-dot" />
+      <div className="location-texts">
+        <span className="location-label">Pick-up</span>
+        <span className="location-value-inline">{pickupLocation}</span>
+      </div>
+      <span className="location-edit">Change</span>
+    </button>
 
-          <div className="location-row">
-            <span className="location-dot dropoff-dot" />
-            <div className="location-texts">
-              <span className="location-label">Drop-off</span>
-              <input
-                className="location-input"
-                placeholder="Enter destination"
-                aria-label="Drop-off location"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+    {/* Drop-off row */}
+    <button
+      className="location-row-btn"
+      onClick={onEditDropoff}
+      aria-label="Edit drop-off location"
+    >
+      <span className="location-dot dropoff-dot" />
+      <div className="location-texts">
+        <span className="location-label">Drop-off</span>
+        <span className="location-value-inline">
+          {dropoffLocation || "Enter destination"}
+        </span>
+      </div>
+      <span className="location-edit">Change</span>
+    </button>
+  </div>
+</section>
+
 
 {/* Vehicle options */}
 <section className="ride-section">

@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import HomeScreen from "./components/HomeScreen";
 import RideScreen from "./components/RideScreen";
 import PickupScreen from "./components/PickupScreen";
+import DropoffScreen from "./components/DropoffScreen";
 import "./App.css";
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState("home");
   const [pickupLocation, setPickupLocation] = useState("Current location");
+  const [dropoffLocation, setDropoffLocation] = useState("");
 
   const renderScreen = () => {
     switch (currentScreen) {
@@ -21,10 +23,13 @@ function App() {
       case "rides":
         return (
           <RideScreen
-            pickupLocation={pickupLocation}
-            onBack={() => setCurrentScreen("home")}
-            onEditPickup={() => setCurrentScreen("pickup")}
-          />
+  pickupLocation={pickupLocation}
+  dropoffLocation={dropoffLocation}
+  onBack={() => setCurrentScreen("home")}
+  onEditPickup={() => setCurrentScreen("pickup")}
+  onEditDropoff={() => setCurrentScreen("dropoff")}
+/>
+
         );
       case "pickup":
         return (
@@ -37,6 +42,19 @@ function App() {
             }}
           />
         );
+
+        case "dropoff":
+          return (
+            <DropoffScreen
+              selectedDropoff={dropoffLocation}
+              onBack={() => setCurrentScreen("rides")}
+              onSelectDropoff={(loc) => {
+                setDropoffLocation(loc);
+                setCurrentScreen("rides");
+              }}
+            />
+          );
+
       case "wallet":
         return <div className="placeholder-screen">Wallet screen (coming soon)</div>;
       case "profile":
