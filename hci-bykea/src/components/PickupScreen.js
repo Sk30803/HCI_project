@@ -18,12 +18,21 @@ const PickupScreen = ({ onBack, onSelectPickup, selectedPickup }) => {
 
   return (
     <div className="pickup-screen">
-      <section className="pickup-section pickup-header-row">
-        <button className="header-icon-button" onClick={onBack} aria-label="Back to ride">
-          ←
-        </button>
-        <h1 className="ride-title">Choose pick-up</h1>
-      </section>
+      <div className="ride-back-row">
+  <button
+    className="back-chip"
+    onClick={onBack}
+  >
+    <span className="back-arrow">⟵</span>
+    <span className="back-text">Go back</span>
+  </button>
+</div>
+
+<section className="pickup-section pickup-header-card">
+  <h1 className="ride-title">Choose pick-up</h1>
+  <p className="ride-subtitle">Step 1 · Set your start location</p>
+</section>
+
 
       {/* Search + suggestions */}
       <section className="pickup-section">

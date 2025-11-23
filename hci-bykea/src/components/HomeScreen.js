@@ -1,69 +1,101 @@
-import React from "react";
+// src/components/HomeScreen.js
+import React, { useState } from "react";
 
 const HomeScreen = ({ onSelectService }) => {
+  const [selectedService, setSelectedService] = useState("ride");
+
+  const handleContinue = () => {
+    if (!onSelectService) return;
+    onSelectService(selectedService); // right now only "ride" is wired in App.js
+  };
+
   return (
     <div className="home">
-      {/* Greeting */}
-      <section className="home-section">
-        <h1 className="home-title">Where do you want to go today?</h1>
-        <p className="home-subtitle">Book a ride, send a parcel, or cash-in securely.</p>
-      </section>
+      {/* Hero card: one primary goal */}
+      <section className="home-section hero-card">
+        <p className="hero-eyebrow">Start something</p>
+        <h1 className="hero-title">Where do you want to go?</h1>
 
-      {/* Search / destination input */}
-      <section className="home-section">
-        <div className="destination-card" role="button" tabIndex={0}>
-          <div className="destination-icon">📍</div>
-          <div className="destination-text">
-            <span className="destination-label">Enter destination</span>
-            <span className="destination-placeholder">Tap to choose drop-off location</span>
-          </div>
+        {/* From */}
+        <div className="hero-row">
+          <span className="hero-label">From</span>
+          <button className="hero-pill">
+            <span className="hero-pill-dot" />
+            <span className="hero-pill-text">Current location</span>
+          </button>
         </div>
+
+        {/* To */}
+        <div className="hero-row">
+          <span className="hero-label">To</span>
+          <button className="hero-input" aria-label="Choose destination">
+            <span className="hero-input-placeholder">
+              Search destination or choose on map
+            </span>
+          </button>
+        </div>
+
+        {/* Primary CTA */}
+        <button className="hero-cta" onClick={handleContinue}>
+          Continue
+        </button>
       </section>
 
-      {/* Primary quick actions */}
+      {/* Service chooser: 3-tab pill */}
       <section className="home-section">
-        <h2 className="section-heading">Main services</h2>
-        <div className="quick-actions">
+        <div className="service-switch" role="tablist" aria-label="Select service type">
           <button
-            className="quick-action-card"
-            onClick={() => onSelectService && onSelectService("ride")}
+            className={`service-tab ${
+              selectedService === "ride" ? "service-tab--active" : ""
+            }`}
+            role="tab"
+            onClick={() => setSelectedService("ride")}
           >
-            <span className="quick-action-icon">🛵</span>
-            <span className="quick-action-title">Ride</span>
-            <span className="quick-action-subtitle">Bike / Rickshaw / Car</span>
+            🛵 Ride
           </button>
-
-          <button className="quick-action-card">
-            <span className="quick-action-icon">📦</span>
-            <span className="quick-action-title">Parcel</span>
-            <span className="quick-action-subtitle">Send items safely</span>
+          <button
+            className={`service-tab ${
+              selectedService === "parcel" ? "service-tab--active" : ""
+            }`}
+            role="tab"
+            onClick={() => setSelectedService("parcel")}
+          >
+            📦 Parcel
           </button>
-
-          <button className="quick-action-card">
-            <span className="quick-action-icon">💸</span>
-            <span className="quick-action-title">Cash</span>
-            <span className="quick-action-subtitle">Cash pick & drop</span>
+          <button
+            className={`service-tab ${
+              selectedService === "cash" ? "service-tab--active" : ""
+            }`}
+            role="tab"
+            onClick={() => setSelectedService("cash")}
+          >
+            💸 Cash
           </button>
         </div>
+
+        <p className="service-helper">
+          You’re booking a <strong>{selectedService}</strong>. You can change this anytime.
+        </p>
       </section>
 
-      {/* Promotions / info */}
+      {/* Wallet & offers (secondary) */}
       <section className="home-section">
-        <h2 className="section-heading">Offers & tips</h2>
-        <div className="promo-card">
-          <div className="promo-text">
-            <h3 className="promo-title">Bykea Wallet (New)</h3>
-            <p className="promo-description">
-              Add money once, pay for rides and parcels instantly. No need to switch apps.
-            </p>
+        <div className="wallet-card">
+          <div>
+            <p className="wallet-label">Bykea Wallet</p>
+            <p className="wallet-balance">Rs 0</p>
+            <p className="wallet-note">Pay instantly for rides and parcels.</p>
           </div>
-          <button className="promo-cta">Set up wallet</button>
+          <button className="wallet-action">Add money</button>
         </div>
       </section>
 
-      {/* Recent locations */}
+      {/* Recent locations (short list) */}
       <section className="home-section">
-        <h2 className="section-heading">Recent locations</h2>
+        <div className="recent-header-row">
+          <h2 className="section-heading">Recent locations</h2>
+          <button className="link-button">View all</button>
+        </div>
         <ul className="recent-list">
           <li className="recent-item">
             <span className="recent-icon">🏫</span>
@@ -77,13 +109,6 @@ const HomeScreen = ({ onSelectService }) => {
             <div className="recent-text">
               <span className="recent-title">Home</span>
               <span className="recent-subtitle">Gulshan-e-Iqbal</span>
-            </div>
-          </li>
-          <li className="recent-item">
-            <span className="recent-icon">🏥</span>
-            <div className="recent-text">
-              <span className="recent-title">Aga Khan Hospital</span>
-              <span className="recent-subtitle">Stadium Road</span>
             </div>
           </li>
         </ul>

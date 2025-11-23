@@ -3,12 +3,15 @@ import HomeScreen from "./components/HomeScreen";
 import RideScreen from "./components/RideScreen";
 import PickupScreen from "./components/PickupScreen";
 import DropoffScreen from "./components/DropoffScreen";
+import VehicleScreen from "./components/VehicleScreen";
+
 import "./App.css";
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState("home");
   const [pickupLocation, setPickupLocation] = useState("Current location");
   const [dropoffLocation, setDropoffLocation] = useState("");
+  const [selectedVehicle, setSelectedVehicle] = useState("bike");
 
   const renderScreen = () => {
     switch (currentScreen) {
@@ -20,17 +23,29 @@ function App() {
             }}
           />
         );
-      case "rides":
-        return (
-          <RideScreen
-  pickupLocation={pickupLocation}
-  dropoffLocation={dropoffLocation}
-  onBack={() => setCurrentScreen("home")}
-  onEditPickup={() => setCurrentScreen("pickup")}
-  onEditDropoff={() => setCurrentScreen("dropoff")}
-/>
+        case "rides":
+          return (
+            <RideScreen
+              pickupLocation={pickupLocation}
+              dropoffLocation={dropoffLocation}
+              onBack={() => setCurrentScreen("home")}
+              onEditPickup={() => setCurrentScreen("pickup")}
+              onEditDropoff={() => setCurrentScreen("dropoff")}
+              onContinue={() => setCurrentScreen("vehicle")}
+            />
+          );
 
-        );
+          case "vehicle":
+  return (
+    <VehicleScreen
+      selectedVehicle={selectedVehicle}
+      onBack={() => setCurrentScreen("rides")}
+      onSelectVehicle={(v) => setSelectedVehicle(v)}
+      onContinue={() => alert("Next: choose fare (prototype)")}
+    />
+  );
+
+
       case "pickup":
         return (
           <PickupScreen
@@ -91,7 +106,12 @@ function App() {
         </button>
         <button
           className={`nav-item ${
-            currentScreen === "rides" || currentScreen === "pickup" ? "nav-item--active" : ""
+            currentScreen === "rides" ||
+            currentScreen === "pickup" ||
+            currentScreen === "dropoff" ||
+            currentScreen === "vehicle"
+            ? "nav-item--active"
+            : ""
           }`}
           onClick={() => setCurrentScreen("rides")}
         >

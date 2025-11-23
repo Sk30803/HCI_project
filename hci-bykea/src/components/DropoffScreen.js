@@ -19,12 +19,21 @@ const DropoffScreen = ({ onBack, onSelectDropoff, selectedDropoff }) => {
   return (
     <div className="pickup-screen">
       {/* header */}
-      <section className="pickup-section pickup-header-row">
-        <button className="header-icon-button" onClick={onBack} aria-label="Back to ride">
-          ←
-        </button>
-        <h1 className="ride-title">Choose drop-off</h1>
-      </section>
+      <div className="ride-back-row">
+  <button
+    className="back-chip"
+    onClick={onBack}
+  >
+    <span className="back-arrow">⟵</span>
+    <span className="back-text">Go back</span>
+  </button>
+</div>
+
+<section className="pickup-section pickup-header-card">
+  <h1 className="ride-title">Choose drop-off</h1>
+  <p className="ride-subtitle">Step 2 · Set your destination</p>
+</section>
+
 
       {/* Search + suggestions */}
       <section className="pickup-section">

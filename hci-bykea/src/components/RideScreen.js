@@ -1,108 +1,69 @@
 import React, { useState } from "react";
 
-const RideScreen = ({ onBack, onEditPickup, onEditDropoff, pickupLocation, dropoffLocation }) => {
+const RideScreen = ({ onBack, onEditPickup, onEditDropoff, pickupLocation, dropoffLocation,onContinue }) => {
   const [selectedVehicle, setSelectedVehicle] = useState("bike");
 
   return (
     <div className="ride-screen">
-      <section className="ride-section ride-header-row">
-        <button className="header-icon-button" onClick={onBack} aria-label="Back to home">
-          ←
-        </button>
-        <h1 className="ride-title">Book a ride</h1>
-      </section>
+      <div className="ride-back-row">
+  <button
+    className="back-chip"
+    onClick={onBack}
+    aria-label="Go back to previous screen"
+  >
+    <span className="back-arrow">⟵</span>
+    <span className="back-text">Go back</span>
+  </button>
+</div>
 
-      <section className="ride-section">
-  <div className="ride-locations">
-    {/* Pick-up row */}
-    <button
-      className="location-row-btn"
-      onClick={onEditPickup}
-      aria-label="Edit pickup location"
-    >
-      <span className="location-dot pickup-dot" />
-      <div className="location-texts">
-        <span className="location-label">Pick-up</span>
-        <span className="location-value-inline">{pickupLocation}</span>
-      </div>
-      <span className="location-edit">Change</span>
-    </button>
-
-    {/* Drop-off row */}
-    <button
-      className="location-row-btn"
-      onClick={onEditDropoff}
-      aria-label="Edit drop-off location"
-    >
-      <span className="location-dot dropoff-dot" />
-      <div className="location-texts">
-        <span className="location-label">Drop-off</span>
-        <span className="location-value-inline">
-          {dropoffLocation || "Enter destination"}
-        </span>
-      </div>
-      <span className="location-edit">Change</span>
-    </button>
-  </div>
+<section className="ride-section ride-header-card">
+  <span className="ride-flow-label">Book a ride</span>
+  <h1 className="ride-title">Step 1 · Choose locations</h1>
 </section>
 
+      <section className="ride-section summary-card">
+  <p className="summary-title">Your trip</p>
 
-{/* Vehicle options */}
+  <button className="summary-row" onClick={onEditPickup}>
+    <span className="summary-dot pickup-dot" />
+    <div className="summary-texts">
+      <span className="summary-label">Pick-up</span>
+      <span className="summary-value">{pickupLocation}</span>
+    </div>
+    <span className="summary-edit">Change</span>
+  </button>
+
+  <button className="summary-row" onClick={onEditDropoff}>
+    <span className="summary-dot dropoff-dot" />
+    <div className="summary-texts">
+      <span className="summary-label">Drop-off</span>
+      <span className="summary-value">
+        {dropoffLocation || "Choose destination"}
+      </span>
+    </div>
+    <span className="summary-edit">Change</span>
+  </button>
+</section>
+
 <section className="ride-section">
-  <h2 className="section-heading">Choose vehicle</h2>
+  <h2 className="section-heading">Route preview</h2>
+  <div className="ride-map-wrapper route-map">
+    <img
+      src="/map_route.png"
+      alt="Map preview of your route"
+      className="ride-map-image"
+    />
 
-  {/* Bike */}
-  <button className={`vehicle-card ${selectedVehicle === "bike" ? "vehicle-card--selected" : ""}`}
-    onClick={() => setSelectedVehicle("bike")}
-  >
-    <div className="vehicle-main">
-      <span className="vehicle-name">Bike</span>
-      <span className="vehicle-time">3 min away</span>
-    </div>
-    <div className="vehicle-meta">
-      <span className="vehicle-capacity">1 seat • Low cost</span>
-      <span className="vehicle-price">Rs 180</span>
-    </div>
-  </button>
-
-  {/* Rickshaw */}
-  <button className={`vehicle-card ${selectedVehicle === "rickshaw" ? "vehicle-card--selected" : ""}`}
-    onClick={() => setSelectedVehicle("rickshaw")}
-  >
-    <div className="vehicle-main">
-      <span className="vehicle-name">Rickshaw</span>
-      <span className="vehicle-time">5 min away</span>
-    </div>
-    <div className="vehicle-meta">
-      <span className="vehicle-capacity">2–3 seats • Covered</span>
-      <span className="vehicle-price">Rs 260</span>
-    </div>
-  </button>
-
-  {/* Car */}
-  <button className={`vehicle-card ${selectedVehicle === "car" ? "vehicle-card--selected" : ""}`}
-    onClick={() => setSelectedVehicle("car")}
-  >
-    <div className="vehicle-main">
-      <span className="vehicle-name">Car</span>
-      <span className="vehicle-time">7 min away</span>
-    </div>
-    <div className="vehicle-meta">
-      <span className="vehicle-capacity">4 seats • Extra comfort</span>
-      <span className="vehicle-price">Rs 420</span>
-    </div>
-  </button>
-</section>
-
-{/* Payment + confirm */}
-<section className="ride-section ride-footer">
-  <div className="ride-payment">
-    <span className="payment-label">Payment</span>
-    <button className="payment-method">Cash ▾</button>
+    {/* fake pins on top of the image */}
+    <div className="route-pin route-pin--pickup" />
+    <div className="route-pin route-pin--dropoff" />
   </div>
-  <button className="ride-confirm-btn">Confirm ride</button>
 </section>
 
+
+<button className="ride-primary-btn" onClick={onContinue}>
+  Continue
+</button>
       
     </div>
   );
