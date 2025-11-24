@@ -4,6 +4,12 @@ import RideScreen from "./components/RideScreen";
 import PickupScreen from "./components/PickupScreen";
 import DropoffScreen from "./components/DropoffScreen";
 import VehicleScreen from "./components/VehicleScreen";
+import FareScreen from "./components/FareScreen";
+import OffersScreen from "./components/OffersScreen";
+import BookingSummary from "./components/BookingSummary";
+
+
+
 
 import "./App.css";
 
@@ -12,6 +18,10 @@ function App() {
   const [pickupLocation, setPickupLocation] = useState("Current location");
   const [dropoffLocation, setDropoffLocation] = useState("");
   const [selectedVehicle, setSelectedVehicle] = useState("bike");
+  const [selectedFare, setSelectedFare] = useState(null);
+  const [selectedOffer, setSelectedOffer] = useState(null);
+
+
 
   const renderScreen = () => {
     switch (currentScreen) {
@@ -32,6 +42,7 @@ function App() {
               onEditPickup={() => setCurrentScreen("pickup")}
               onEditDropoff={() => setCurrentScreen("dropoff")}
               onContinue={() => setCurrentScreen("vehicle")}
+              
             />
           );
 
@@ -41,10 +52,38 @@ function App() {
       selectedVehicle={selectedVehicle}
       onBack={() => setCurrentScreen("rides")}
       onSelectVehicle={(v) => setSelectedVehicle(v)}
-      onContinue={() => alert("Next: choose fare (prototype)")}
+      onContinue={() => setCurrentScreen("fare")}
     />
   );
 
+  case "offers":
+  return (
+    <OffersScreen
+      fare={selectedFare}
+      vehicle={selectedVehicle}
+      onBack={() => setCurrentScreen("fare")}
+      onAccept={(offer) => {
+        setSelectedOffer(offer);
+        setCurrentScreen("summary");
+      }}
+    />
+  );
+
+
+
+  case "fare":
+  return (
+    <FareScreen
+      selectedVehicle={selectedVehicle}
+      onBack={() => setCurrentScreen("vehicle")}
+      onConfirmFare={(fare) => {
+        setSelectedFare(fare);      // ← IMPORTANT: store user's fare
+        console.log("Fare selected:", fare);
+        setCurrentScreen("offers");
+      }}
+    />
+  );
+  
 
       case "pickup":
         return (
@@ -69,6 +108,21 @@ function App() {
               }}
             />
           );
+
+          case "summary":
+            return (
+              <BookingSummary
+                pickup={pickupLocation}
+                dropoff={dropoffLocation}
+                vehicle={selectedVehicle}
+                fare={selectedFare}
+                acceptedOffer={selectedOffer}
+                onCancel={() => { setSelectedOffer(null); setCurrentScreen("home"); }}
+                onShare={() => { navigator.clipboard?.writeText("Ride details..."); alert("Copied"); }}
+              />
+            );
+          
+
 
       case "wallet":
         return <div className="placeholder-screen">Wallet screen (coming soon)</div>;

@@ -1087,3 +1087,43 @@ body {
   font-size: 20px;
   font-weight: 700;
 }
+
+
+ /*cancel button red */
+.cancel-btn {
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid #ff5252;
+  background: #ffffff;
+  color: #ff5252;
+  padding: 12px 16px;
+  font-weight: 700;
+  cursor: pointer;
+} 
+
+/*when you want a filled red cancel (alternative)*/
+.cancel-btn.filled {
+  background: #ff5252;
+  color: white;
+  border: none;
+}
+
+/* cancel button red style (already added earlier) */
+.cancel-btn {
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid #ff5252;
+  background: #ffffff;
+  color: #ff5252;
+  padding: 12px 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* subtle card shadow for map preview */
+.driver-map-preview {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #dde1ea;
+  background: #fff;
+}
