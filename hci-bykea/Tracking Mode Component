@@ -1,0 +1,39 @@
+import React from "react";
+
+export default function TrackingMode({ userModel, deliveryDetails }) {
+  return (
+    <div className={`tracking-card ${userModel}`}>
+      <h2>
+        {userModel === "lowLiteracy" ? "🛵📦" : "Delivery in Progress"}
+      </h2>
+
+      {/* Rider Info */}
+      <div className="rider-info">
+        <p>{deliveryDetails.rider.name}</p>
+        <p>⭐ {deliveryDetails.rider.rating}</p>
+        <p>Bike: {deliveryDetails.rider.bike}</p>
+      </div>
+
+      {/* Progress Steps */}
+      <div className="progress-steps">
+        <div className="step active">Rider Assigned</div>
+        <div className="step">Arriving</div>
+        <div className="step">Picked Up</div>
+        <div className="step">Delivered</div>
+      </div>
+
+      {/* Safety Buttons */}
+      <div className="safety-section">
+        <button className="safety-btn">🛡 Safety</button>
+        <button className="safety-btn">📤 Share Trip</button>
+        <button className="safety-btn">📞 Support</button>
+      </div>
+
+      {/* Contact Rider */}
+      <button className="call-btn">📞 Call Rider</button>
+
+      {/* Cancel Delivery */}
+      <button className="cancel-btn">Cancel Delivery</button>
+    </div>
+  );
+}
