@@ -1,0 +1,77 @@
+import React, { useState } from "react";
+
+export default function BookingMode({ userModel, onBookingConfirmed }) {
+  const [pickup, setPickup] = useState("");
+  const [dropoff, setDropoff] = useState("");
+  const [packageType, setPackageType] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
+
+  const handleConfirm = () => {
+    const details = {
+      pickup,
+      dropoff,
+      packageType,
+      paymentMethod,
+      rider: {
+        name: "Ali Khan",
+        rating: 4.9,
+        bike: "LEA-2345"
+      }
+    };
+    onBookingConfirmed(details);
+  };
+
+  return (
+    <div className={`booking-card ${userModel}`}>
+      <h2>{userModel === "lowLiteracy" ? "📦" : "Send a Parcel"}</h2>
+
+      {/* PICKUP */}
+      <div className="form-section">
+        {userModel === "lowLiteracy" ? (
+          <button onClick={() => setPickup("photo-location-1")}>📍 Pickup</button>
+        ) : (
+          <input 
+            placeholder="Pickup Location"
+            value={pickup}
+            onChange={(e) => setPickup(e.target.value)}
+          />
+        )}
+      </div>
+
+      {/* DROPOFF */}
+      <div className="form-section">
+        {userModel === "lowLiteracy" ? (
+          <button onClick={() => setDropoff("photo-location-2")}>🏁 Drop-off</button>
+        ) : (
+          <input 
+            placeholder="Drop-off Location"
+            value={dropoff}
+            onChange={(e) => setDropoff(e.target.value)}
+          />
+        )}
+      </div>
+
+      {/* PACKAGE TYPE */}
+      <div className="package-type">
+        <button onClick={() => setPackageType("small")}>📦 Small</button>
+        <button onClick={() => setPackageType("medium")}>🎒 Medium</button>
+        <button onClick={() => setPackageType("fragile")}>💠 Fragile</button>
+      </div>
+
+      {/* PAYMENT */}
+      <div className="payment-method">
+        <button onClick={() => setPaymentMethod("cash")}>💵 Cash</button>
+        <button onClick={() => setPaymentMethod("wallet")}>🟢 Wallet</button>
+        <button onClick={() => setPaymentMethod("card")}>💳 Card</button>
+      </div>
+
+      {/* CONFIRM */}
+      <button
+        className="confirm-btn"
+        onClick={handleConfirm}
+      >
+        {userModel === "lowLiteracy" ? "✔" : "Confirm Delivery"}
+      </button>
+    </div>
+  );
+}
