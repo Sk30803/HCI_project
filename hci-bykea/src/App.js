@@ -30,6 +30,7 @@ const [accessPanelVisible, setAccessPanelVisible] = useState(false);
 
 const DICT = {
   en: {
+    title: "Where do you want to go?",
     bookRide: "Book Your Ride",
     parcel: "Parcel",
     cash: "Cash",
@@ -38,9 +39,14 @@ const DICT = {
     recent: "Recent locations",
     viewAll: "View all",
     addMoney: "Add money",
+    iba_main_campus: "IBA Main Campus",
+    university_road: "University Road",
+    home: "Home",
+    gulshan_e_iqbal: "Gulshan-e-Iqbal",
     // add all keys your app uses...
   },
   ur: {
+    title: "آپ کہاں جانا چاہتے ہیں؟",
     bookRide: "اپنا سفر بک کریں",
     parcel: "پارسل",
     cash: "کییش",
@@ -49,6 +55,10 @@ const DICT = {
     recent: "حالیہ مقامات",
     viewAll: "تمام دیکھیں",
     addMoney: "رقم شامل کریں",
+    iba_main_campus: "آئی بی اے مین کیمپس",
+    university_road: "یونیورسٹی روڈ",
+    home: "گھر",
+    gulshan_e_iqbal: "گلشنِ اقبال",
     // add keys...
   },
 };
@@ -203,20 +213,46 @@ const readAloud = (text, lang = null) => {
         </button>
 
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+    {/* header (inside .app-header) */}
     <button
       title="Accessibility"
       onClick={() => {
-        setAccessibilityOn((s) => !s);
+        // toggle accessibility mode + panel
+        setAccessibilityOn(true);
         setAccessPanelVisible((v) => !v);
       }}
-      style={{ background: "transparent", border: "none", color: "#fff", cursor: "pointer" }}
-      aria-pressed={accessibilityOn}
+      aria-pressed={accessPanelVisible}
+      aria-label="Accessibility options"
+      style={{
+        background: "transparent",
+        border: "none",
+        cursor: "pointer",
+        fontSize: 20,
+        padding: 8,
+      }}
     >
       ♿
     </button>
   </div>
 
       </header>
+
+      {/* Accessibility dropdown anchored to header */}
+      {accessibilityOn && (
+        <div
+          className="access-panel-wrapper"
+          style={{ position: "relative" }} /* wrapper that anchors absolute child */
+        >
+          <AccessibilityPanel
+            visible={accessPanelVisible}
+            onClose={() => setAccessPanelVisible(false)}
+            locale={locale}
+            setLocale={setLocale}
+            readAloud={(txt) => readAloud(txt, locale === "ur" ? "ur-PK" : "en-US")}
+          />
+        </div>
+      )}
+
 
       <main className="app-main">{renderScreen()}</main>
 
@@ -257,19 +293,6 @@ const readAloud = (text, lang = null) => {
           <span className="nav-label">Profile</span>
         </button>
       </nav>
-
-      {accessibilityOn && (
-  <AccessibilityPanel
-    visible={accessPanelVisible}
-    onClose={() => setAccessPanelVisible(false)}
-    locale={locale}
-    setLocale={setLocale}
-    readAloud={(txt) => {
-      const lang = locale === "ur" ? "ur-PK" : "en-US";
-      readAloud(txt, lang);
-    }}
-  />
-)}
 
 
     </div>

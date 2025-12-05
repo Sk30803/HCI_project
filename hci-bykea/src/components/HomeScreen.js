@@ -48,15 +48,6 @@ const HomeScreen = ({
     return (dict[locale] && dict[locale][key]) || dict.en[key] || key;
   };
 
-  // announce screen when accessibility turned on and screen mounts
-  useEffect(() => {
-    if (accessibilityOn) {
-      const announce = `${t("title")}. ${t("bookRide")}`;
-      readAloud(announce);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accessibilityOn, locale]);
-
   const handleContinue = () => {
     if (onSelectService) onSelectService("ride");
   };
@@ -96,13 +87,6 @@ const HomeScreen = ({
             💸 {t("cash")}
           </button>
         </div>
-
-        <p className="service-helper" style={{ marginTop: 10 }}>
-          {/* short helper text — keep in user's language */}
-          {locale === "ur"
-            ? "آپ ابھی بک کر سکتے ہیں۔ آپ جب چاہیں تبدیل کر سکتے ہیں۔"
-            : "You’re booking a ride. You can change this anytime."}
-        </p>
       </section>
 
       {/* Wallet & offers (secondary) */}
@@ -127,15 +111,15 @@ const HomeScreen = ({
           <li className="recent-item">
             <span className="recent-icon" aria-hidden>🏫</span>
             <div className="recent-text">
-              <span className="recent-title">IBA Main Campus</span>
-              <span className="recent-subtitle">University Road</span>
+              <span className="recent-title">{t("iba_main_campus")}</span>
+              <span className="recent-subtitle">{t("university_road")}</span>
             </div>
           </li>
           <li className="recent-item">
             <span className="recent-icon" aria-hidden>🏠</span>
             <div className="recent-text">
-              <span className="recent-title">Home</span>
-              <span className="recent-subtitle">Gulshan-e-Iqbal</span>
+              <span className="recent-title">{t("home")}</span>
+              <span className="recent-subtitle">{t("gulshan_e_iqbal")}</span>
             </div>
           </li>
         </ul>

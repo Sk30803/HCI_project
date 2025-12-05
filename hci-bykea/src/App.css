@@ -20,6 +20,19 @@ body {
   border: 1px solid #e2e4ea;
 }
 
+/* Make panel mobile-friendly */
+.accessibility-panel {
+  max-width: 90vw;
+}
+
+@media (max-width: 420px) {
+  .accessibility-panel {
+    right: 8px !important;
+    left: 8px !important;
+    width: auto !important;
+  }
+}
+
 /* Header */
 
 .app-header {
@@ -1145,4 +1158,22 @@ body {
   overflow: hidden;
   border: 1px solid #dde1ea;
   background: #fff;
+}
+
+/* place the panel directly under header, responsive for mobile */
+.access-panel-wrapper .accessibility-panel {
+  position: absolute;
+  top: 56px;           /* adjust to header height */
+  right: 12px;
+  width: 320px;
+  z-index: 9999;
+}
+
+@media (max-width: 420px) {
+  .access-panel-wrapper .accessibility-panel {
+    left: 8px;
+    right: 8px;
+    width: auto;
+    top: 56px;
+  }
 }
