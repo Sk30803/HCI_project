@@ -16,24 +16,22 @@ const HomeScreen = ({ onSelectService }) => {
         <p className="hero-eyebrow">Start something</p>
         <h1 className="hero-title">Where do you want to go?</h1>
 
-        {/* From */}
-        <div className="hero-row">
-          <span className="hero-label">From</span>
-          <button className="hero-pill">
-            <span className="hero-pill-dot" />
-            <span className="hero-pill-text">Current location</span>
-          </button>
-        </div>
+        <section className="ride-section ride-header-card">
+        <span className="ride-flow-label">Start something</span>
+        <h1 className="ride-title">Book a ride</h1>
 
-        {/* To */}
-        <div className="hero-row">
-          <span className="hero-label">To</span>
-          <button className="hero-input" aria-label="Choose destination">
-            <span className="hero-input-placeholder">
-              Search destination or choose on map
-            </span>
-          </button>
-        </div>
+        <p style={{ fontSize: 13, color: "#6b7180", marginTop: 6 }}>
+          Tap continue to plan your trip.
+        </p>
+
+        <button
+          className="ride-primary-btn"
+          style={{ marginTop: 14 }}
+          onClick={() => onContinue()}
+        >
+          Continue
+        </button>
+      </section>
 
         {/* Primary CTA */}
         <button className="hero-cta" onClick={handleContinue}>

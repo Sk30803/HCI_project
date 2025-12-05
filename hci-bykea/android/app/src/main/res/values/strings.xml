@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">hci-bykea</string>
+    <string name="title_activity_main">hci-bykea</string>
+    <string name="package_name">com.sahil.bykea</string>
+    <string name="custom_url_scheme">com.sahil.bykea</string>
+</resources>
