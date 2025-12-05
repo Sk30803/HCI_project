@@ -1,0 +1,25 @@
+// src/components/DeliveryScreen.js
+import React, { useState } from "react";
+import BookingMode from "./BookingMode";
+import TrackingMode from "./TrackingMode";
+
+export default function DeliveryScreen({ userModel = "standard" }) {
+  const [isTracking, setIsTracking] = useState(false);
+  const [deliveryDetails, setDeliveryDetails] = useState(null);
+
+  return (
+    <div className={`delivery-screen model-${userModel}`}>
+      {!isTracking ? (
+        <BookingMode
+          userModel={userModel}
+          onBookingConfirmed={(details) => {
+            setDeliveryDetails(details);
+            setIsTracking(true);
+          }}
+        />
+      ) : (
+        <TrackingMode userModel={userModel} deliveryDetails={deliveryDetails} />
+      )}
+    </div>
+  );
+}
