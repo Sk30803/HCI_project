@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HomeScreen from "./components/HomeScreen";
 import RideScreen from "./components/RideScreen";
 import PickupScreen from "./components/PickupScreen";
@@ -7,10 +7,7 @@ import VehicleScreen from "./components/VehicleScreen";
 import FareScreen from "./components/FareScreen";
 import OffersScreen from "./components/OffersScreen";
 import BookingSummary from "./components/BookingSummary";
-
-
-
-
+import AccessibilityPanel from "./components/AccessibilityPanel";
 import "./App.css";
 
 function App() {
@@ -21,6 +18,60 @@ function App() {
   const [selectedFare, setSelectedFare] = useState(null);
   const [selectedOffer, setSelectedOffer] = useState(null);
 
+// at top of App()
+const [accessibilityOn, setAccessibilityOn] = useState(() => {
+  return localStorage.getItem("hci_accessibility") === "true";
+});
+const [locale, setLocale] = useState(() => localStorage.getItem("hci_locale") || "en");
+const [accessPanelVisible, setAccessPanelVisible] = useState(false);
+
+<button onClick={() => { setAccessibilityOn(true); setAccessPanelVisible(v => !v); }}>♿</button>
+
+
+const DICT = {
+  en: {
+    bookRide: "Book Your Ride",
+    parcel: "Parcel",
+    cash: "Cash",
+    wallet: "Bykea Wallet",
+    walletNote: "Pay instantly for rides and parcels.",
+    recent: "Recent locations",
+    viewAll: "View all",
+    addMoney: "Add money",
+    // add all keys your app uses...
+  },
+  ur: {
+    bookRide: "اپنا سفر بک کریں",
+    parcel: "پارسل",
+    cash: "کییش",
+    wallet: "بائیکیا والیٹ",
+    walletNote: "سفر اور پارسل کے لیے فوری ادائیگی کریں۔",
+    recent: "حالیہ مقامات",
+    viewAll: "تمام دیکھیں",
+    addMoney: "رقم شامل کریں",
+    // add keys...
+  },
+};
+
+// helper
+const T = (key) => (DICT[locale] && DICT[locale][key]) || DICT.en[key] || key;
+
+
+// persist
+useEffect(() => localStorage.setItem("hci_accessibility", accessibilityOn), [accessibilityOn]);
+useEffect(() => localStorage.setItem("hci_locale", locale), [locale]);
+
+// read aloud util
+const readAloud = (text, lang = null) => {
+  if (!("speechSynthesis" in window)) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  // choose voice language if available
+  if (lang) utter.lang = lang;
+  // reduce speech rate slightly for clarity
+  utter.rate = 0.95;
+  window.speechSynthesis.speak(utter);
+};
 
 
   const renderScreen = () => {
@@ -31,6 +82,10 @@ function App() {
             onSelectService={(service) => {
               if (service === "ride") setCurrentScreen("rides");
             }}
+            locale={locale}
+            T={T}
+            accessibilityOn={accessibilityOn}
+            readAloud={readAloud}
           />
         );
         case "rides":
@@ -134,7 +189,7 @@ function App() {
   };
 
   return (
-    <div className="app">
+    <div className="app" dir={locale === "ur" ? "rtl" : "ltr"}>
       <header className="app-header">
         <button className="header-icon-button" aria-label="Open menu">
           ☰
@@ -146,6 +201,21 @@ function App() {
         <button className="header-icon-button" aria-label="Call support">
           📞
         </button>
+
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+    <button
+      title="Accessibility"
+      onClick={() => {
+        setAccessibilityOn((s) => !s);
+        setAccessPanelVisible((v) => !v);
+      }}
+      style={{ background: "transparent", border: "none", color: "#fff", cursor: "pointer" }}
+      aria-pressed={accessibilityOn}
+    >
+      ♿
+    </button>
+  </div>
+
       </header>
 
       <main className="app-main">{renderScreen()}</main>
@@ -187,7 +257,23 @@ function App() {
           <span className="nav-label">Profile</span>
         </button>
       </nav>
+
+      {accessibilityOn && (
+  <AccessibilityPanel
+    visible={accessPanelVisible}
+    onClose={() => setAccessPanelVisible(false)}
+    locale={locale}
+    setLocale={setLocale}
+    readAloud={(txt) => {
+      const lang = locale === "ur" ? "ur-PK" : "en-US";
+      readAloud(txt, lang);
+    }}
+  />
+)}
+
+
     </div>
+    
   );
 }
 

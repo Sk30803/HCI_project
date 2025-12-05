@@ -417,6 +417,25 @@ body {
 
 /* Service segmented control */
 
+.service-large {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #dde1ea;
+  background: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+}
+
+.service-large--active {
+  background: #0f9d58;
+  color: #fff;
+  border-color: #0f9d58;
+}
+
+
 .service-switch {
   display: flex;
   padding: 4px;
