@@ -59,10 +59,16 @@ const BookingSummary = ({
     return (dict[locale] && dict[locale][key]) || dict.en[key] || key;
   };
 
-  const initialMinutes =
-    acceptedOffer && acceptedOffer.eta
-      ? Number(String(acceptedOffer.eta).replace(/\D/g, "")) || 0
-      : 0;
+  let initialMinutes = 0;
+
+if (acceptedOffer) {
+  if (acceptedOffer.etaMinutes != null) {
+    initialMinutes = acceptedOffer.etaMinutes;
+  } else if (acceptedOffer.eta) {
+    initialMinutes =
+      Number(String(acceptedOffer.eta).replace(/\D/g, "")) || 0;
+  }
+}
 
   const [remainingSec, setRemainingSec] = useState(initialMinutes * 60);
   const [showMapPreview, setShowMapPreview] = useState(false);
@@ -78,9 +84,11 @@ const BookingSummary = ({
   useEffect(() => setRemainingSec(initialMinutes * 60), [acceptedOffer]);
 
   const prettyEta = () => {
-    if (remainingSec <= 0) return t("arriving");
-    if (remainingSec < 60)
-      return `${remainingSec} ${t("seconds")}`;
+    if (remainingSec <= 0) {
+      if (acceptedOffer?.eta) return acceptedOffer.eta;
+      return t("arriving");
+    }
+    if (remainingSec < 60) return `${remainingSec} ${t("seconds")}`;
     return `${Math.ceil(remainingSec / 60)} ${t("minutes")}`;
   };
 

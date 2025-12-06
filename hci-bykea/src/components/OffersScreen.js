@@ -200,7 +200,10 @@ const OffersScreen = ({
                     </button>
 
                     <button
-                      onClick={() => onAccept(o)}
+                      onClick={() => onAccept({
+                        ...o,
+                        etaMinutes: o.etaMin, // 🔥 map it correctly
+                      })}
                       style={{
                         flex: 1,
                         padding: "8px 0",

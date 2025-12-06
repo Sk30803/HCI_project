@@ -36,6 +36,7 @@ const FareScreen = ({
   selectedVehicle,
   onBack,
   onConfirmFare,
+  onFareChange,
   locale = "en",
 }) => {
   const t = (key) => {
@@ -95,7 +96,11 @@ const FareScreen = ({
           min={minFare}
           max={minFare + 200}
           value={fare}
-          onChange={(e) => setFare(Number(e.target.value))}
+          onChange={(e) => {
+            const value = Number(e.target.value);
+            setFare(value);
+            onFareChange && onFareChange(value);
+          }}
           style={{ width: "100%" }}
         />
 
@@ -111,7 +116,11 @@ const FareScreen = ({
           value={fare}
           min={minFare}
           max={minFare + 200}
-          onChange={(e) => setFare(Number(e.target.value))}
+          onChange={(e) => {
+            const value = Number(e.target.value);
+            setFare(value);
+            onFareChange && onFareChange(value);
+          }}
         />
 
         <p style={{ fontSize: 12, color: "#6b7180", marginTop: 6 }}>

@@ -56,29 +56,29 @@ const VehicleScreen = ({
       id: "bike",
       label: t("bikeLabel"),
       detail: t("bikeDetail"),
-      price: locale === "ur" ? "Rs ۱۸۰" : "Rs 180",
-      eta: locale === "ur" ? "۳ منٹ" : "3 min",
+      price: locale === "ur" ? "۱۸۰" : "180",
+      eta: locale === "ur" ? "۳" : "3",
     },
     {
       id: "rickshaw",
       label: t("rickshawLabel"),
       detail: t("rickshawDetail"),
-      price: locale === "ur" ? "Rs ۲۶۰" : "Rs 260",
-      eta: locale === "ur" ? "۵ منٹ" : "5 min",
+      price: locale === "ur" ? " ۲۶۰" : "260",
+      eta: locale === "ur" ? "۵" : "5",
     },
     {
       id: "car",
       label: t("carLabel"),
       detail: t("carDetail"),
-      price: locale === "ur" ? "Rs ۴۲۰" : "Rs 420",
-      eta: locale === "ur" ? "۷ منٹ" : "7 min",
+      price: locale === "ur" ? "۴۲۰" : "420",
+      eta: locale === "ur" ? "۷" : "7",
     },
     {
       id: "ac-car",
       label: t("acCarLabel"),
       detail: t("acCarDetail"),
-      price: locale === "ur" ? "Rs ۴۸۰" : "Rs 480",
-      eta: locale === "ur" ? "۸ منٹ" : "8 min",
+      price: locale === "ur" ? "۴۸۰" : "480",
+      eta: locale === "ur" ? "۸" : "8",
     },
   ];
 
@@ -111,12 +111,14 @@ const VehicleScreen = ({
               <div className="vehicle-main">
                 <span className="vehicle-name">{v.label}</span>
                 <span className="vehicle-time">
-                {v.eta} {t("minute")} {t("away")}
+                {locale === "ur"
+    ? `${v.eta} منٹ دور`
+    : `${v.eta} min away`}
                 </span>
               </div>
               <div className="vehicle-meta">
                 <span className="vehicle-capacity">{v.detail}</span>
-                <span className="vehicle-price">{t("currency")} {v.price}</span>
+                <span className="vehicle-price"> {locale === "ur" ? `روپے ${v.price}` : `Rs ${v.price}`}</span>
               </div>
             </button>
           ))}

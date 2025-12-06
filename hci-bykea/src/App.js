@@ -17,6 +17,14 @@ function App() {
   const [selectedVehicle, setSelectedVehicle] = useState("bike");
   const [selectedFare, setSelectedFare] = useState(null);
   const [selectedOffer, setSelectedOffer] = useState(null);
+  const [paymentMethod,setPaymentMethod] = useState("cash");
+
+  const baseFares = {
+    bike: 180,
+    rickshaw: 260,
+    car: 420,
+    "ac-car": 480,
+  };
 
 // at top of App()
 const [accessibilityOn, setAccessibilityOn] = useState(() => {
@@ -57,14 +65,15 @@ const getScreenSummary = () => {
       );
 
     case "vehicle":
+      const minFare = baseFares[selectedVehicle] || 0;
       return tr(
-        `Choose vehicle. Selected: ${selectedVehicle || "none"}. Recommended minimum fare is Rs ${selectedFare || "—"}.`,
+        `Choose vehicle. Selected: ${selectedVehicle || "none"}. Recommended minimum fare is Rs ${minFare || "—"}.`,
         `گاڑی منتخب کریں۔ منتخب شدہ: ${selectedVehicle || "کوئی نہیں"}. کم از کم کرایہ Rs ${selectedFare || "—"}.`
       );
 
     case "fare":
       return tr(
-        `Set your fare. Current value is Rs ${selectedFare || "—"}. Choose payment method and continue to get driver offers.`,
+        `Set your fare. Current value is Rs ${selectedFare || "—"}. your current payment method. ${paymentMethod||"—"}.  Continue to get driver offers.`,
         `اپنا کرایہ مقرر کریں۔ موجودہ رقم Rs ${selectedFare || "—"}. ادائیگی کا طریقہ منتخب کریں اور ڈرائیور آفرز دیکھیں۔`
       );
 
@@ -76,7 +85,9 @@ const getScreenSummary = () => {
 
     case "summary":
       return tr(
-        `Booking confirmed. Vehicle: ${selectedOffer?.car || selectedVehicle || "—"}. Fare Rs ${selectedFare || "—"}. Estimated arrival ${selectedOffer?.eta || "-"}.`,
+        `Booking confirmed. PickUp Location.${pickupLocation}. Dropoff: ${dropoffLocation}. Vehicle: ${selectedOffer?.car || selectedVehicle || "—"}. Fare Rs ${selectedFare || "—"}. Estimated arrival ${selectedOffer?.etaMinutes
+          ? `${selectedOffer.etaMinutes} min`
+          : "-"}.`,
         `بکنگ کنفرم ہو گئی ہے۔ گاڑی: ${selectedOffer?.car || selectedVehicle || "—"}. کرایہ Rs ${selectedFare || "—"}. متوقع آمد ${selectedOffer?.eta || "-"}.`
       );
 
@@ -179,7 +190,10 @@ const readAloud = (text, lang = null) => {
     <VehicleScreen
       selectedVehicle={selectedVehicle}
       onBack={() => setCurrentScreen("rides")}
-      onSelectVehicle={(v) => setSelectedVehicle(v)}
+      onSelectVehicle={(v) => {
+        setSelectedVehicle(v);
+        setSelectedFare(baseFares[v] || null);  // <-- add this line
+      }}
       onContinue={() => setCurrentScreen("fare")}
       locale={locale}
     />
@@ -207,10 +221,11 @@ const readAloud = (text, lang = null) => {
       selectedVehicle={selectedVehicle}
       onBack={() => setCurrentScreen("vehicle")}
       onConfirmFare={(fare) => {
+        setPaymentMethod(paymentMethod);
         setSelectedFare(fare);      // ← IMPORTANT: store user's fare
-        console.log("Fare selected:", fare);
         setCurrentScreen("offers");
       }}
+      onFareChange={(fare) => setSelectedFare(fare)}   // <-- add this
       locale={locale}
     />
   );
