@@ -13,6 +13,7 @@ export default function AccessibilityPanel({
   locale,
   setLocale,
   readAloud,
+  readCurrent,
 }) {
   const [voiceEnabled, setVoiceEnabled] = useState(true);
 
@@ -104,24 +105,29 @@ export default function AccessibilityPanel({
         </label>
 
         <div style={{ display: "flex", gap: 8 }}>
-          <button
-            disabled={!voiceEnabled || locale !== "en"}
-            onClick={() => {
-              if (locale !== "en") return; // only English allowed
-              readAloud("Reading the screen aloud.");
-            }}
-            style={{
-              flex: 1,
-              padding: 10,
-              borderRadius: 8,
-              background:
-                locale !== "en" ? "#bdbdbd" : "#0f9d58",
-              color: "#fff",
-              cursor: locale !== "en" ? "not-allowed" : "pointer",
-            }}
-          >
-            Read screen
-          </button>
+        <button
+        disabled={!voiceEnabled}
+        onClick={() => {
+          // call the read-current-screen function passed from App
+          if (typeof readCurrent === "function") {
+            readCurrent();
+          } else {
+            // fallback: use simple text
+            if (locale === "en") readAloud("Reading the screen aloud.");
+          }
+        }}
+        style={{
+          flex: 1,
+          padding: 10,
+          borderRadius: 8,
+          background: locale !== "en" ? "#bdbdbd" : "#0f9d58",
+          color: "#fff",
+          cursor: locale !== "en" ? "not-allowed" : "pointer",
+        }}
+      >
+        Read screen
+        </button>
+
 
           <button
             onClick={() => {

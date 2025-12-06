@@ -27,6 +27,67 @@ const [accessPanelVisible, setAccessPanelVisible] = useState(false);
 
 <button onClick={() => { setAccessibilityOn(true); setAccessPanelVisible(v => !v); }}>♿</button>
 
+const getScreenSummary = () => {
+  // helper to choose english/urdu text quickly; prefer T if you have it
+  const tr = (en, ur) => (locale === "ur" ? ur : en);
+
+  switch (currentScreen) {
+    case "home":
+      return tr(
+        "You are on the Home screen. You can book a ride, deliver a parcel, send cash, or add money to your Bykea wallet.",
+        "آپ ہوم اسکرین پر ہیں۔ آپ اپنا سفر بک کر سکتے ہیں، پارسل بھیج سکتے ہیں، رقم بھیج سکتے ہیں، یا بائیکیا والیٹ میں رقم شامل کر سکتے ہیں۔"
+      );
+
+    case "ride":
+      return tr(
+        `You are on the Ride screen. Pickup: ${pickupLocation || "current location"}. Destination: ${dropoffLocation || "not set yet"}. Tap continue to choose a vehicle.`,
+        `آپ رائیڈ اسکرین پر ہیں۔ پک اپ: ${pickupLocation || "موجودہ مقام"}۔ منزل: ${dropoffLocation || "ابھی طے نہیں"}. جاری رکھنے کے لیے کنٹینیو کریں۔`
+      );
+
+    case "pickup":
+      return tr(
+        "You are on the pickup screen. Search or choose your pickup location.",
+        "آپ پک اپ اسکرین پر ہیں۔ اپنا پک اپ مقام تلاش کریں یا نقشے سے منتخب کریں۔"
+      );
+
+    case "dropoff":
+      return tr(
+        "You are on the drop-off screen. Search or choose your destination.",
+        "آپ ڈراپ آف اسکرین پر ہیں۔ اپنا منزل تلاش کریں یا نقشے سے منتخب کریں۔"
+      );
+
+    case "vehicle":
+      return tr(
+        `Choose vehicle. Selected: ${selectedVehicle || "none"}. Recommended minimum fare is Rs ${selectedFare || "—"}.`,
+        `گاڑی منتخب کریں۔ منتخب شدہ: ${selectedVehicle || "کوئی نہیں"}. کم از کم کرایہ Rs ${selectedFare || "—"}.`
+      );
+
+    case "fare":
+      return tr(
+        `Set your fare. Current value is Rs ${selectedFare || "—"}. Choose payment method and continue to get driver offers.`,
+        `اپنا کرایہ مقرر کریں۔ موجودہ رقم Rs ${selectedFare || "—"}. ادائیگی کا طریقہ منتخب کریں اور ڈرائیور آفرز دیکھیں۔`
+      );
+
+    case "offers":
+      return tr(
+        `Driver offers are incoming. You offered Rs ${selectedFare || "—"}. Tap accept on any offer to confirm.`,
+        `ڈرائیور آفرز آرہی ہیں۔ آپ نے Rs ${selectedFare || "—"} کی پیشکش کی ہے۔ قبول کرنے کے لیے آفر پر Accept کریں۔`
+      );
+
+    case "summary":
+      return tr(
+        `Booking confirmed. Vehicle: ${selectedOffer?.car || selectedVehicle || "—"}. Fare Rs ${selectedFare || "—"}. Estimated arrival ${selectedOffer?.eta || "-"}.`,
+        `بکنگ کنفرم ہو گئی ہے۔ گاڑی: ${selectedOffer?.car || selectedVehicle || "—"}. کرایہ Rs ${selectedFare || "—"}. متوقع آمد ${selectedOffer?.eta || "-"}.`
+      );
+
+    default:
+      return tr(
+        "You are in the app. Use the navigation to go to different screens.",
+        "آپ ایپ میں ہیں۔ مختلف اسکرینز پر جانے کے لیے نیویگیشن استعمال کریں۔"
+      );
+  }
+};
+
 
 const DICT = {
   en: {
@@ -107,7 +168,9 @@ const readAloud = (text, lang = null) => {
               onEditPickup={() => setCurrentScreen("pickup")}
               onEditDropoff={() => setCurrentScreen("dropoff")}
               onContinue={() => setCurrentScreen("vehicle")}
-              
+              locale={locale}
+              accessibilityOn={accessibilityOn}
+              readAloud={readAloud}
             />
           );
 
@@ -118,6 +181,7 @@ const readAloud = (text, lang = null) => {
       onBack={() => setCurrentScreen("rides")}
       onSelectVehicle={(v) => setSelectedVehicle(v)}
       onContinue={() => setCurrentScreen("fare")}
+      locale={locale}
     />
   );
 
@@ -131,6 +195,7 @@ const readAloud = (text, lang = null) => {
         setSelectedOffer(offer);
         setCurrentScreen("summary");
       }}
+      locale={locale}
     />
   );
 
@@ -146,6 +211,7 @@ const readAloud = (text, lang = null) => {
         console.log("Fare selected:", fare);
         setCurrentScreen("offers");
       }}
+      locale={locale}
     />
   );
   
@@ -159,6 +225,8 @@ const readAloud = (text, lang = null) => {
               setPickupLocation(loc);
               setCurrentScreen("rides");
             }}
+            locale={locale}
+            T={T}
           />
         );
 
@@ -171,6 +239,10 @@ const readAloud = (text, lang = null) => {
                 setDropoffLocation(loc);
                 setCurrentScreen("rides");
               }}
+              locale={locale}
+              T={T}
+              accessibilityOn={accessibilityOn}
+              readAloud={readAloud}
             />
           );
 
@@ -184,6 +256,7 @@ const readAloud = (text, lang = null) => {
                 acceptedOffer={selectedOffer}
                 onCancel={() => { setSelectedOffer(null); setCurrentScreen("home"); }}
                 onShare={() => { navigator.clipboard?.writeText("Ride details..."); alert("Copied"); }}
+                locale={locale}
               />
             );
           
@@ -208,9 +281,6 @@ const readAloud = (text, lang = null) => {
           <span className="location-label">Current area</span>
           <span className="location-value">Karachi, Pakistan ▾</span>
         </div>
-        <button className="header-icon-button" aria-label="Call support">
-          📞
-        </button>
 
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
     {/* header (inside .app-header) */}
@@ -248,7 +318,7 @@ const readAloud = (text, lang = null) => {
             onClose={() => setAccessPanelVisible(false)}
             locale={locale}
             setLocale={setLocale}
-            readAloud={(txt) => readAloud(txt, locale === "ur" ? "ur-PK" : "en-US")}
+            readCurrent={() => readAloud(getScreenSummary(), "en-US")} // readAloud(text, lang)
           />
         </div>
       )}

@@ -1,7 +1,41 @@
 import React, { useState } from "react";
 
-const RideScreen = ({ onBack, onEditPickup, onEditDropoff, pickupLocation, dropoffLocation,onContinue }) => {
-  const [selectedVehicle, setSelectedVehicle] = useState("bike");
+const rideDict = {
+  en: {
+    flowLabel: "Book a ride",
+    title: "Step 1 · Choose locations",
+    yourTrip: "Your trip",
+    pickup: "Pick-up",
+    dropoff: "Drop-off",
+    change: "Change",
+    routePreview: "Route preview",
+    continue: "Continue",
+  },
+  ur: {
+    flowLabel: "رائیڈ بک کریں",
+    title: "مرحلہ 1 · مقامات منتخب کریں",
+    yourTrip: "آپ کا سفر",
+    pickup: "پک اپ",
+    dropoff: "ڈراپ آف",
+    change: "تبدیل کریں",
+    routePreview: "روٹ پری ویو",
+    continue: "جاری رکھیں",
+  },
+};
+
+const RideScreen = ({ 
+  onBack, 
+  onEditPickup, 
+  onEditDropoff, 
+  pickupLocation, 
+  dropoffLocation,
+  onContinue,
+  locale = "en",
+  accessibilityOn = false,
+  readAloud = () => {},
+ }) => {
+  const t = (key) => { return (rideDict[locale] && rideDict[locale][key]) || rideDict.en[key] || key; };
+
 
   return (
     <div className="ride-screen">
@@ -17,36 +51,36 @@ const RideScreen = ({ onBack, onEditPickup, onEditDropoff, pickupLocation, dropo
 </div>
 
 <section className="ride-section ride-header-card">
-  <span className="ride-flow-label">Book a ride</span>
-  <h1 className="ride-title">Step 1 · Choose locations</h1>
+  <span className="ride-flow-label">{t("flowLabel")}</span>
+  <h1 className="ride-title">{t("title")}</h1>
 </section>
 
       <section className="ride-section summary-card">
-  <p className="summary-title">Your trip</p>
+  <p className="summary-title">{t("yourTrip")}</p>
 
   <button className="summary-row" onClick={onEditPickup}>
     <span className="summary-dot pickup-dot" />
     <div className="summary-texts">
-      <span className="summary-label">Pick-up</span>
+      <span className="summary-label">{t("pickup")}</span>
       <span className="summary-value">{pickupLocation}</span>
     </div>
-    <span className="summary-edit">Change</span>
+    <span className="summary-edit">{t("change")}</span>
   </button>
 
   <button className="summary-row" onClick={onEditDropoff}>
     <span className="summary-dot dropoff-dot" />
     <div className="summary-texts">
-      <span className="summary-label">Drop-off</span>
+      <span className="summary-label">{t("dropoff")}</span>
       <span className="summary-value">
         {dropoffLocation || "Choose destination"}
       </span>
     </div>
-    <span className="summary-edit">Change</span>
+    <span className="summary-edit">{t("change")}</span>
   </button>
 </section>
 
 <section className="ride-section">
-  <h2 className="section-heading">Route preview</h2>
+  <h2 className="section-heading">{t("routePreview")}</h2>
   <div className="ride-map-wrapper route-map">
     <img
       src="/map_route.png"
@@ -62,7 +96,7 @@ const RideScreen = ({ onBack, onEditPickup, onEditDropoff, pickupLocation, dropo
 
 
 <button className="ride-primary-btn" onClick={onContinue}>
-  Continue
+{t("continue")}
 </button>
       
     </div>

@@ -1,6 +1,47 @@
 import React, { useState } from "react";
 
-const FareScreen = ({ selectedVehicle, onBack, onConfirmFare }) => {
+const fareDict = {
+  en: {
+    goBack: "Go back",
+    flowLabel: "Book a ride",
+    title: "Step 3 · Choose fare",
+    selectedVehicle: "Selected vehicle",
+    minFarePrefix: "Min Rs",
+    setYourFare: "Set your fare",
+    fasterMatchHint: "You can offer more to get a faster match.",
+    paymentMethod: "Payment method",
+    cashOption: "Cash (pay to driver)",
+    jazzcashOption: "JazzCash",
+    walletOption: "Bykea Wallet",
+    continue: "Continue",
+  },
+  ur: {
+    goBack: "واپس جائیں",
+    flowLabel: "رائیڈ بک کریں",
+    title: "مرحلہ 3 · کرایہ منتخب کریں",
+    selectedVehicle: "منتخب گاڑی",
+    minFarePrefix: "کم از کم Rs",
+    setYourFare: "اپنا کرایہ مقرر کریں",
+    fasterMatchHint:
+      "تیز میچ کے لیے آپ زیادہ کرایہ پیش کر سکتے ہیں۔",
+    paymentMethod: "ادائیگی کا طریقہ",
+    cashOption: "نقد (ڈرائیور کو ادا کریں)",
+    jazzcashOption: "جاز کیش",
+    walletOption: "بائیکیا والیٹ",
+    continue: "جاری رکھیں",
+  },
+};
+
+const FareScreen = ({
+  selectedVehicle,
+  onBack,
+  onConfirmFare,
+  locale = "en",
+}) => {
+  const t = (key) => {
+    return (fareDict[locale] && fareDict[locale][key]) || fareDict.en[key] || key;
+  };
+
   const baseFares = {
     bike: 180,
     rickshaw: 260,
@@ -13,37 +54,41 @@ const FareScreen = ({ selectedVehicle, onBack, onConfirmFare }) => {
   const [fare, setFare] = useState(minFare);
   const [payment, setPayment] = useState("cash");
 
+  const vehicleName =
+    selectedVehicle?.replace("-", " ").toUpperCase() || "";
+
   return (
     <div className="fare-screen">
-
       {/* Back */}
       <div className="ride-back-row">
         <button className="back-chip" onClick={onBack}>
           <span className="back-arrow">⟵</span>
-          <span className="back-text">Go back</span>
+          <span className="back-text">{t("goBack")}</span>
         </button>
       </div>
 
       {/* Header */}
       <section className="ride-section ride-header-card">
-        <span className="ride-flow-label">Book a ride</span>
-        <h1 className="ride-title">Step 3 · Choose fare</h1>
+        <span className="ride-flow-label">{t("flowLabel")}</span>
+        <h1 className="ride-title">{t("title")}</h1>
       </section>
 
       {/* Vehicle summary */}
       <section className="ride-section summary-card">
-        <p className="summary-title">Selected vehicle</p>
+        <p className="summary-title">{t("selectedVehicle")}</p>
         <div className="summary-row" style={{ padding: "4px 0" }}>
           <span className="summary-value" style={{ fontWeight: 600 }}>
-            {selectedVehicle.replace("-", " ").toUpperCase()}
+            {vehicleName}
           </span>
-          <span className="summary-edit">Min Rs {minFare}</span>
+          <span className="summary-edit">
+            {t("minFarePrefix")} {minFare}
+          </span>
         </div>
       </section>
 
       {/* Fare slider + manual input */}
       <section className="ride-section">
-        <h2 className="section-heading">Set your fare</h2>
+        <h2 className="section-heading">{t("setYourFare")}</h2>
 
         <input
           type="range"
@@ -70,13 +115,13 @@ const FareScreen = ({ selectedVehicle, onBack, onConfirmFare }) => {
         />
 
         <p style={{ fontSize: 12, color: "#6b7180", marginTop: 6 }}>
-          You can offer more to get a faster match.
+          {t("fasterMatchHint")}
         </p>
       </section>
 
       {/* Payment dropdown */}
       <section className="ride-section">
-        <h2 className="section-heading">Payment method</h2>
+        <h2 className="section-heading">{t("paymentMethod")}</h2>
 
         <select
           className="pickup-search"
@@ -84,9 +129,9 @@ const FareScreen = ({ selectedVehicle, onBack, onConfirmFare }) => {
           value={payment}
           onChange={(e) => setPayment(e.target.value)}
         >
-          <option value="cash">Cash (pay to driver)</option>
-          <option value="jazzcash">jazzcash</option>
-          <option value="wallet">Bykea Wallet</option>
+          <option value="cash">{t("cashOption")}</option>
+          <option value="jazzcash">{t("jazzcashOption")}</option>
+          <option value="wallet">{t("walletOption")}</option>
         </select>
       </section>
 
@@ -96,7 +141,7 @@ const FareScreen = ({ selectedVehicle, onBack, onConfirmFare }) => {
           className="ride-primary-btn"
           onClick={() => onConfirmFare(fare, payment)}
         >
-          Continue
+          {t("continue")}
         </button>
       </section>
     </div>
