@@ -8,6 +8,8 @@ import FareScreen from "./components/FareScreen";
 import OffersScreen from "./components/OffersScreen";
 import BookingSummary from "./components/BookingSummary";
 import AccessibilityPanel from "./components/AccessibilityPanel";
+import ParcelScreen from "./components/ParcelScreen";
+import WalletScreen from "./components/WalletScreen";
 import "./App.css";
 
 function App() {
@@ -165,6 +167,8 @@ const readAloud = (text, lang = null) => {
           <HomeScreen
             onSelectService={(service) => {
               if (service === "ride") setCurrentScreen("rides");
+              if (service === "parcel") setCurrentScreen("parcel");
+              if (service === "wallet") setCurrentScreen("wallet");
             }}
             locale={locale}
             T={T}
@@ -172,6 +176,27 @@ const readAloud = (text, lang = null) => {
             readAloud={readAloud}
           />
         );
+
+        case "parcel":
+        return (
+          <ParcelScreen
+            onBack={() => setCurrentScreen("home")}
+            onContinue={() => {
+              alert("Parcel flow complete (prototype)");
+              setCurrentScreen("home");
+            }}
+            locale={locale}
+          />
+        );
+
+      case "wallet":
+        return (
+          <WalletScreen
+            locale={locale}
+            onBack={() => setCurrentScreen("home")}
+          />
+        );
+
         case "rides":
           return (
             <RideScreen

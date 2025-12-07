@@ -356,16 +356,12 @@ body {
 /* Bottom navigation */
 
 .bottom-nav {
-  position: sticky;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  max-width: 430px;
-  margin: 0 auto;
   display: flex;
-  background: #ffffff;
-  border-top: 1px solid #d7dbe5;
-  padding: 4px 0;
+  justify-content: space-around; /* 👈 THIS fixes clumping */
+  align-items: center;
+  height: 60px;
+  background: #fff;
+  border-top: 1px solid #e5e5e5;
 }
 
 .nav-item {

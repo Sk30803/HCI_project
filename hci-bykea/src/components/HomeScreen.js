@@ -97,7 +97,9 @@ const HomeScreen = ({
             <p className="wallet-balance">Rs 0</p>
             <p className="wallet-note">{t("walletNote")}</p>
           </div>
-          <button className="wallet-action" aria-label={t("addMoney")}>{t("addMoney")}</button>
+          <button className="wallet-action" aria-label={t("addMoney")}
+          onClick={() => onSelectService && onSelectService("wallet")}
+          >{t("addMoney")}</button>
         </div>
       </section>
 
