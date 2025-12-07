@@ -31,9 +31,11 @@ const [accessibilityOn, setAccessibilityOn] = useState(() => {
   return localStorage.getItem("hci_accessibility") === "true";
 });
 const [locale, setLocale] = useState(() => localStorage.getItem("hci_locale") || "en");
-const [accessPanelVisible, setAccessPanelVisible] = useState(false);
+//const [accessPanelVisible, setAccessPanelVisible] = useState(false);
 
-<button onClick={() => { setAccessibilityOn(true); setAccessPanelVisible(v => !v); }}>♿</button>
+<button onClick={() => { setAccessibilityOn(true); 
+//setAccessPanelVisible(v => !v); 
+}}>♿</button>
 
 const getScreenSummary = () => {
   // helper to choose english/urdu text quickly; prefer T if you have it
@@ -46,7 +48,7 @@ const getScreenSummary = () => {
         "آپ ہوم اسکرین پر ہیں۔ آپ اپنا سفر بک کر سکتے ہیں، پارسل بھیج سکتے ہیں، رقم بھیج سکتے ہیں، یا بائیکیا والیٹ میں رقم شامل کر سکتے ہیں۔"
       );
 
-    case "ride":
+    case "rides":
       return tr(
         `You are on the Ride screen. Pickup: ${pickupLocation || "current location"}. Destination: ${dropoffLocation || "not set yet"}. Tap continue to choose a vehicle.`,
         `آپ رائیڈ اسکرین پر ہیں۔ پک اپ: ${pickupLocation || "موجودہ مقام"}۔ منزل: ${dropoffLocation || "ابھی طے نہیں"}. جاری رکھنے کے لیے کنٹینیو کریں۔`
@@ -303,10 +305,10 @@ const readAloud = (text, lang = null) => {
       title="Accessibility"
       onClick={() => {
         // toggle accessibility mode + panel
-        setAccessibilityOn(true);
-        setAccessPanelVisible((v) => !v);
+        //setAccessibilityOn(true);
+        //setAccessPanelVisible((v) => !v);
       }}
-      aria-pressed={accessPanelVisible}
+      //aria-pressed={accessPanelVisible}
       aria-label="Accessibility options"
       style={{
         background: "transparent",
@@ -318,6 +320,16 @@ const readAloud = (text, lang = null) => {
     >
       ♿
     </button>
+      {/* toggle switch */}
+    <label className="access-toggle">
+      <input
+        type="checkbox"
+        checked={accessibilityOn}
+        onChange={(e) => setAccessibilityOn(e.target.checked)}
+      />
+      <span className="access-toggle-slider" />
+    </label>
+
   </div>
 
       </header>
@@ -329,8 +341,8 @@ const readAloud = (text, lang = null) => {
           style={{ position: "relative" }} /* wrapper that anchors absolute child */
         >
           <AccessibilityPanel
-            visible={accessPanelVisible}
-            onClose={() => setAccessPanelVisible(false)}
+            visible={true}
+            onClose={() => setAccessibilityOn(false)}
             locale={locale}
             setLocale={setLocale}
             readCurrent={() => readAloud(getScreenSummary(), "en-US")} // readAloud(text, lang)

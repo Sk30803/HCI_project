@@ -20,6 +20,58 @@ body {
   border: 1px solid #e2e4ea;
 }
 
+@media (max-width: 420px) {
+  .access-panel-wrapper .accessibility-panel {
+    padding: 8px 12px;
+  }
+}
+
+.access-toggle {
+  position: relative;
+  display: inline-block;
+  width: 34px;
+  height: 18px;
+}
+
+.access-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.access-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 999px;
+  transition: 0.2s;
+}
+
+.access-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+.access-toggle input:checked + .access-toggle-slider {
+  background-color: #0e4df8;
+}
+
+.access-toggle input:checked + .access-toggle-slider:before {
+  transform: translateX(16px);
+}
+
+
 /* Make panel mobile-friendly */
 .accessibility-panel {
   max-width: 90vw;
@@ -1160,20 +1212,14 @@ body {
   background: #fff;
 }
 
-/* place the panel directly under header, responsive for mobile */
+/* place the panel directly under header, responsive for mobile 
 .access-panel-wrapper .accessibility-panel {
   position: absolute;
-  top: 56px;           /* adjust to header height */
+  top: 56px;           
   right: 12px;
   width: 320px;
   z-index: 9999;
 }
+*/
 
-@media (max-width: 420px) {
-  .access-panel-wrapper .accessibility-panel {
-    left: 8px;
-    right: 8px;
-    width: auto;
-    top: 56px;
-  }
-}
+
