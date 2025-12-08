@@ -20,6 +20,8 @@ function App() {
   const [selectedFare, setSelectedFare] = useState(null);
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [paymentMethod,setPaymentMethod] = useState("cash");
+  const [isListening, setIsListening] = useState(false);
+
 
   const baseFares = {
     bike: 180,
@@ -28,6 +30,103 @@ function App() {
     "ac-car": 480,
   };
 
+  const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
+
+const recognitionRef = React.useRef(null);
+
+const handleVoiceCommandRef = React.useRef(null);
+
+
+useEffect(() => {
+  if (!SpeechRecognition) return;
+
+  const recognition = new SpeechRecognition();
+
+  recognition.lang = "en-US";
+  recognition.continuous = true;
+
+  recognition.onstart = () => setIsListening(true);
+  recognition.onend = () => setIsListening(false);
+  recognition.onerror = () => setIsListening(false);
+
+  recognition.onresult = (e) => {
+    const text = e.results[0][0].transcript.toLowerCase();
+    console.log("VOICE HEARD:", text);   // 👈 ADD THIS
+    if (handleVoiceCommandRef.current) {
+      handleVoiceCommandRef.current(text);
+    }
+  };
+
+  recognitionRef.current = recognition;
+}, []); // ✅ keep empty dependency array
+
+
+const startListening = () => {
+  if (!recognitionRef.current) {
+    alert("Voice not supported");
+    return;
+  }
+  recognitionRef.current.start();
+};
+
+const stopListening = () => {
+  recognitionRef.current?.stop();
+};
+
+const getNumberFromSpeech = (text) => {
+  if (text.includes("one") || text.includes("1")) return 1;
+  if (text.includes("two") || text.includes("2")) return 2;
+  if (text.includes("three") || text.includes("3")) return 3;
+  if (text.includes("four") || text.includes("4")) return 4;
+  if (text.includes("five") || text.includes("5")) return 5;
+  return null;
+};
+
+const handleVoiceCommand = (text) => {
+  const n = getNumberFromSpeech(text);
+  if (!n) return;
+
+  switch (currentScreen) {
+    case "home":
+      if (n === 1) setCurrentScreen("rides");
+      if (n === 2) setCurrentScreen("parcel");
+      if (n === 3) setCurrentScreen("wallet");
+      break;
+
+    case "rides":
+      if (n === 1) setCurrentScreen("pickup");
+      if (n === 2) setCurrentScreen("dropoff");
+      if (n === 3) setCurrentScreen("vehicle");
+      break;
+
+    case "vehicle":
+      if (n === 1) setSelectedVehicle("bike");
+      if (n === 2) setSelectedVehicle("rickshaw");
+      if (n === 3) setSelectedVehicle("car");
+      if (n === 4) setSelectedVehicle("ac-car");
+      if (n === 5) setCurrentScreen("fare");
+      break;
+
+    case "fare":
+      if (n === 1) setCurrentScreen("offers");
+      break;
+
+    case "parcel":
+      if (n === 4) setCurrentScreen("home");
+      break;
+
+    case "wallet":
+      if (n === 1) alert("Add money (prototype)");
+      if (n === 2) setCurrentScreen("home");
+      break;
+
+    default:
+      break;
+  }
+};
+
+handleVoiceCommandRef.current = handleVoiceCommand;
 // at top of App()
 const [accessibilityOn, setAccessibilityOn] = useState(() => {
   return localStorage.getItem("hci_accessibility") === "true";
@@ -35,22 +134,31 @@ const [accessibilityOn, setAccessibilityOn] = useState(() => {
 const [locale, setLocale] = useState(() => localStorage.getItem("hci_locale") || "en");
 //const [accessPanelVisible, setAccessPanelVisible] = useState(false);
 
-<button onClick={() => { setAccessibilityOn(true); 
-//setAccessPanelVisible(v => !v); 
-}}>♿</button>
-
 const getScreenSummary = () => {
   // helper to choose english/urdu text quickly; prefer T if you have it
   const tr = (en, ur) => (locale === "ur" ? ur : en);
+  const vc = isListening; // voice commands active
 
   switch (currentScreen) {
     case "home":
+      if (vc) {
+        return tr(
+          "Voice commands are ON. Say 1 to book a ride, 2 to deliver a parcel, 3 to open Bykea Wallet.",
+          "وائس کمانڈ آن ہے۔ ایک بولیں رائیڈ بک کرنے کے لیے، دو بولیں پارسل بھیجنے کے لیے، تین بولیں بائیکیا والیٹ کھولنے کے لیے۔"
+        );
+      }
       return tr(
         "You are on the Home screen. You can book a ride, deliver a parcel, send cash, or add money to your Bykea wallet.",
         "آپ ہوم اسکرین پر ہیں۔ آپ اپنا سفر بک کر سکتے ہیں، پارسل بھیج سکتے ہیں، رقم بھیج سکتے ہیں، یا بائیکیا والیٹ میں رقم شامل کر سکتے ہیں۔"
       );
 
     case "rides":
+      if (vc) {
+        return tr(
+          "Voice commands are ON. Say 1 to edit pickup, 2 to edit dropoff, 3 to continue and choose a vehicle.",
+          "وائس کمانڈ آن ہے۔ ایک بولیں پک اپ بدلنے کے لیے، دو بولیں ڈراپ آف بدلنے کے لیے، تین بولیں گاڑی منتخب کرنے کے لیے آگے بڑھنے کے لیے۔"
+        );
+      }
       return tr(
         `You are on the Ride screen. Pickup: ${pickupLocation || "current location"}. Destination: ${dropoffLocation || "not set yet"}. Tap continue to choose a vehicle.`,
         `آپ رائیڈ اسکرین پر ہیں۔ پک اپ: ${pickupLocation || "موجودہ مقام"}۔ منزل: ${dropoffLocation || "ابھی طے نہیں"}. جاری رکھنے کے لیے کنٹینیو کریں۔`
@@ -70,12 +178,23 @@ const getScreenSummary = () => {
 
     case "vehicle":
       const minFare = baseFares[selectedVehicle] || 0;
+      if (vc) {
+        return tr(
+          "Say 1 to choose bike. 2 to choose rickshaw. 3 for Car. 4 for Ac-Car",
+          "وائس کمانڈ آن ہے۔ ایک بولیں پک اپ بدلنے کے لیے، دو بولیں ڈراپ آف بدلنے کے لیے، تین بولیں گاڑی منتخب کرنے کے لیے آگے بڑھنے کے لیے۔"
+        );
+      }
       return tr(
         `Choose vehicle. Selected: ${selectedVehicle || "none"}. Recommended minimum fare is Rs ${minFare || "—"}.`,
         `گاڑی منتخب کریں۔ منتخب شدہ: ${selectedVehicle || "کوئی نہیں"}. کم از کم کرایہ Rs ${selectedFare || "—"}.`
       );
 
     case "fare":
+      if (vc) {
+        return tr(
+          'Say 1 to Continue'
+        )
+      }
       return tr(
         `Set your fare. Current value is Rs ${selectedFare || "—"}. your current payment method. ${paymentMethod||"—"}.  Continue to get driver offers.`,
         `اپنا کرایہ مقرر کریں۔ موجودہ رقم Rs ${selectedFare || "—"}. ادائیگی کا طریقہ منتخب کریں اور ڈرائیور آفرز دیکھیں۔`
@@ -302,10 +421,6 @@ const readAloud = (text, lang = null) => {
               />
             );
           
-
-
-      case "wallet":
-        return <div className="placeholder-screen">Wallet screen (coming soon)</div>;
       case "profile":
         return <div className="placeholder-screen">Profile & Settings (coming soon)</div>;
       default:
@@ -366,6 +481,9 @@ const readAloud = (text, lang = null) => {
           style={{ position: "relative" }} /* wrapper that anchors absolute child */
         >
           <AccessibilityPanel
+            startListening={startListening}
+            stopListening={stopListening}
+            isListening={isListening}
             visible={true}
             onClose={() => setAccessibilityOn(false)}
             locale={locale}
