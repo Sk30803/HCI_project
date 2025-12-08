@@ -1,7 +1,3 @@
-// Redesigned HomeScreen.js (Updated for spacing, decluttered layout, better sizing & smoother animations)
-// NOTE: Functionality unchanged — only layout & visual structure redesigned.
-// Combine with the updated CSS in the same file for now.
-
 import React from "react";
 import "./HomeScreen.css";
 
@@ -42,14 +38,14 @@ const HomeScreen = ({ onSelectService, locale = "en", T }) => {
   const t = (key) => (typeof T === "function" ? T(key) : dict[locale][key]);
 
   return (
-    <div className="home-container gradient-bg">
+    <div className="home-container">
 
       {/* TOP GREETING SECTION */}
-      <section className="hero-section card-float">
-        <h1 className="hero-title neon-text">{t("title")}</h1>
+      <section className="hero-section">
+        <h1 className="hero-title">{t("title")}</h1>
 
         <button
-          className="primary-cta elevate-lg"
+          className="primary-cta"
           onClick={() => onSelectService("ride")}
         >
           <span className="cta-icon">🛵</span>
@@ -58,85 +54,73 @@ const HomeScreen = ({ onSelectService, locale = "en", T }) => {
       </section>
 
       {/* SERVICE OPTIONS */}
-      <section className="service-wrapper fade-in">
+      <section className="service-wrapper">
         <h2 className="section-label">Services</h2>
-        <div className="service-grid-modern">
+        <div className="service-grid">
 
-          <button className="service-modern-card {
-  margin-top: 4px;
-  margin-bottom: 4px;
-  background: #ffffffee;
-  border-radius: 22px;
-  padding: 20px;
-  display: flex;
-  gap: 16px;
-  border: none;
-  cursor: pointer;
-  backdrop-filter: blur(10px);
-  transition: .2s ease;
-} elevate" onClick={() => onSelectService("parcel")}>
-            <div className="service-modern-icon">📦</div>
-            <div className="service-modern-text">
-              <div className="service-modern-title">{t("parcel")}</div>
-              <div className="service-modern-desc">Door to door</div>
+          <button 
+            className="service-card" 
+            onClick={() => onSelectService("parcel")}
+          >
+            <div className="service-icon">📦</div>
+            <div className="service-text">
+              <div className="service-title">{t("parcel")}</div>
+              <div className="service-desc">Door to door</div>
             </div>
           </button>
 
-          <button className="service-modern-card elevate" onClick={() => onSelectService("cash")}>
-            <div className="service-modern-icon">💸</div>
-            <div className="service-modern-text">
-              <div className="service-modern-title">{t("cash")}</div>
-              <div className="service-modern-desc">Cash delivery</div>
+          <button 
+            className="service-card" 
+            onClick={() => onSelectService("cash")}
+          >
+            <div className="service-icon">💸</div>
+            <div className="service-text">
+              <div className="service-title">{t("cash")}</div>
+              <div className="service-desc">Cash delivery</div>
             </div>
           </button>
         </div>
       </section>
 
       {/* WALLET CARD */}
-      <section className="wallet-section fade-in-delay">
-        <div className="wallet-card-modern {
-  margin-top: 8px;
-  margin-bottom: 8px;
-  background: linear-gradient(135deg,#d8ffef,#c7ffe5);
-  border-radius: 24px;
-  padding: 28px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-} elevate-lg">
-          <div>
-            <div className="wallet-title-modern">{t("wallet")}</div>
-            <div className="wallet-balance-modern">Rs 0</div>
-            <div className="wallet-note-modern">{t("walletNote")}</div>
+      <section className="wallet-section">
+        <div className="wallet-card">
+          <div className="wallet-info">
+            <div className="wallet-title">{t("wallet")}</div>
+            <div className="wallet-balance">Rs 0</div>
+            <div className="wallet-note">{t("walletNote")}</div>
           </div>
 
-          <button className="wallet-action-modern" onClick={() => onSelectService("wallet")}>
+          <button 
+            className="wallet-action" 
+            onClick={() => onSelectService("wallet")}
+          >
             + {t("addMoney")}
           </button>
         </div>
       </section>
 
       {/* RECENT LOCATIONS */}
-      <section className="recent-section fade-in-delay-more">
+      <section className="recent-section">
         <div className="recent-header">
-          <h2 className="recent-title-modern">{t("recent")}</h2>
+          <h2 className="recent-title">{t("recent")}</h2>
           <button className="view-link">{t("viewAll")}</button>
         </div>
 
-        <div className="recent-list-modern">
-          <button className="recent-modern-card elevate" >
-            <div className="recent-modern-icon">🏫</div>
-            <div className="recent-modern-text">
-              <div className="recent-modern-name">{t("iba_main_campus")}</div>
-              <div className="recent-modern-desc">{t("university_road")}</div>
+        <div className="recent-list">
+          <button className="recent-card">
+            <div className="recent-icon">🏫</div>
+            <div className="recent-text">
+              <div className="recent-name">{t("iba_main_campus")}</div>
+              <div className="recent-desc">{t("university_road")}</div>
             </div>
           </button>
 
-          <button className="recent-modern-card elevate">
-            <div className="recent-modern-icon">🏠</div>
-            <div className="recent-modern-text">
-              <div className="recent-modern-name">{t("home")}</div>
-              <div className="recent-modern-desc">{t("gulshan_e_iqbal")}</div>
+          <button className="recent-card">
+            <div className="recent-icon">🏠</div>
+            <div className="recent-text">
+              <div className="recent-name">{t("home")}</div>
+              <div className="recent-desc">{t("gulshan_e_iqbal")}</div>
             </div>
           </button>
         </div>
@@ -146,4 +130,3 @@ const HomeScreen = ({ onSelectService, locale = "en", T }) => {
 };
 
 export default HomeScreen;
-

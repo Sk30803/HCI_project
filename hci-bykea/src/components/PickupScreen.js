@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import './PickupScreen.css'; // Importing the updated CSS file
 
 const SUGGESTIONS = [
   "Teen Talwar, Clifton",
@@ -10,7 +11,6 @@ const SUGGESTIONS = [
   "Lucky One Mall, Rashid Minhas Road",
 ];
 
-// local dictionary for this screen
 const pickupDict = {
   en: {
     goBack: "Go back",
@@ -92,13 +92,12 @@ const PickupScreen = ({
         </button>
       </div>
 
-      <section className="pickup-section pickup-header-card">
+      <section className="pickup-header">
         <h1 className="ride-title">{t("title")}</h1>
         <p className="ride-subtitle">{t("subtitle")}</p>
       </section>
 
-      {/* Search + suggestions */}
-      <section className="pickup-section">
+      <section className="pickup-search-section">
         <input
           className="pickup-search"
           placeholder={t("searchPlaceholder")}
@@ -126,20 +125,11 @@ const PickupScreen = ({
         )}
       </section>
 
-      <section className="pickup-section">
-        <h2 className="section-heading">{t("chooseFromMap")}</h2>
-        <div className="pickup-map-wrapper">
-          <img
-            src="/map_image.png"
-            className="pickup-map-image"
-            alt="Map showing nearby area"
-          />
-        </div>
-        <p className="pickup-small-hint">{t("mapHint")}</p>
-      </section>
+      
 
-      {/* Current location */}
-      <section className="pickup-section">
+      <section className="pickup-map-section">
+        <h2 className="section-heading">{t("chooseFromMap")}</h2>
+        <section className="pickup-current-location-section">
         <button
           className="pickup-row"
           onClick={() => onSelectPickup("Current location")}
@@ -152,10 +142,18 @@ const PickupScreen = ({
         </button>
       </section>
 
-      {/* Saved places */}
-      <section className="pickup-section">
-        <h2 className="section-heading">{t("savedPlaces")}</h2>
+        <div className="pickup-map-wrapper">
+          <img
+            src="/map_image.png"
+            className="pickup-map-image"
+            alt="Map showing nearby area"
+          />
+        </div>
+        <p className="pickup-small-hint">{t("mapHint")}</p>
+      </section>
 
+      <section className="pickup-location-section">
+        <h2 className="section-heading">{t("savedPlaces")}</h2>
         <button
           className="pickup-row"
           onClick={() => onSelectPickup("Home, Gulshan-e-Iqbal")}
@@ -177,12 +175,8 @@ const PickupScreen = ({
             <span className="pickup-subtitle">{t("universityRoad")}</span>
           </div>
         </button>
-      </section>
 
-      {/* Recent locations */}
-      <section className="pickup-section">
         <h2 className="section-heading">{t("recent")}</h2>
-
         <button
           className="pickup-row"
           onClick={() =>
@@ -209,6 +203,8 @@ const PickupScreen = ({
           </div>
         </button>
       </section>
+
+      
     </div>
   );
 };
