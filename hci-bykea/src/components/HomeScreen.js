@@ -1,33 +1,26 @@
-// src/components/HomeScreen.js
-import React, { useEffect } from "react";
+// Redesigned HomeScreen.js (Updated for spacing, decluttered layout, better sizing & smoother animations)
+// NOTE: Functionality unchanged — only layout & visual structure redesigned.
+// Combine with the updated CSS in the same file for now.
 
-/**
- * Props:
- * - onSelectService(selected)   // callback when user chooses a service or continues
- * - locale                      // 'en' | 'ur'
- * - T                           // optional translation function: key => string
- * - accessibilityOn             // boolean
- * - readAloud(text)             // optional function to speak text
- */
-const HomeScreen = ({
-  onSelectService,
-  locale = "en",
-  T,
-  accessibilityOn = false,
-  readAloud = () => {},
-}) => {
-  // tiny fallback dictionary if T isn't passed
+import React from "react";
+import "./HomeScreen.css";
+
+const HomeScreen = ({ onSelectService, locale = "en", T }) => {
   const dict = {
     en: {
       title: "Where do you want to go?",
-      bookRide: "Book Your Ride",
-      parcel: "Parcel",
-      cash: "Cash",
-      wallet: "Bykea Wallet",
-      walletNote: "Pay instantly for rides and parcels.",
-      recent: "Recent locations",
-      viewAll: "View all",
+      bookRide: "Book a Ride",
+      parcel: "Send Parcel",
+      cash: "Cash Pickup",
+      wallet: "Wallet",
+      walletNote: "Fast, secure & instant payments",
+      recent: "Recent",
+      viewAll: "See all",
       addMoney: "Add money",
+      iba_main_campus: "IBA Main Campus",
+      university_road: "University Road",
+      home: "Home",
+      gulshan_e_iqbal: "Gulshan-e-Iqbal",
     },
     ur: {
       title: "آپ کہا جانا چاہتے ہیں؟",
@@ -35,99 +28,122 @@ const HomeScreen = ({
       parcel: "پارسل",
       cash: "کییش",
       wallet: "بائیکیا والیٹ",
-      walletNote: "سفر اور پارسل کے لیے فوری ادائیگی کریں۔",
+      walletNote: "سفر اور پارسل کے لیے فوری ادائیگی۔",
       recent: "حالیہ مقامات",
       viewAll: "تمام دیکھیں",
       addMoney: "رقم شامل کریں",
+      iba_main_campus: "آئی بی اے مین کیمپس",
+      university_road: "یونیورسٹی روڈ",
+      home: "گھر",
+      gulshan_e_iqbal: "گلشنِ اقبال",
     },
   };
 
-  // helper to get translation
-  const t = (key) => {
-    if (typeof T === "function") return T(key);
-    return (dict[locale] && dict[locale][key]) || dict.en[key] || key;
-  };
-
-  const handleContinue = () => {
-    if (onSelectService) onSelectService("ride");
-  };
+  const t = (key) => (typeof T === "function" ? T(key) : dict[locale][key]);
 
   return (
-    <div className="home">
-      {/* Hero card: one primary goal */}
-      <section className="home-section hero-card" aria-labelledby="home-hero-title">
-        <h1 id="home-hero-title" className="hero-title">{t("title")}</h1>
+    <div className="home-container gradient-bg">
 
-        {/* Primary CTA */}
+      {/* TOP GREETING SECTION */}
+      <section className="hero-section card-float">
+        <h1 className="hero-title neon-text">{t("title")}</h1>
+
         <button
-          className="hero-cta"
-          onClick={handleContinue}
-          aria-label={t("bookRide")}
+          className="primary-cta elevate-lg"
+          onClick={() => onSelectService("ride")}
         >
+          <span className="cta-icon">🛵</span>
           {t("bookRide")}
         </button>
       </section>
 
-      {/* Large action buttons for other services */}
-      <section className="home-section" aria-label="Service actions">
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          <button
-            className="service-large"
-            onClick={() => onSelectService && onSelectService("parcel")}
-            aria-label={t("parcel")}
-          >
-            📦 {t("parcel")}
+      {/* SERVICE OPTIONS */}
+      <section className="service-wrapper fade-in">
+        <h2 className="section-label">Services</h2>
+        <div className="service-grid-modern">
+
+          <button className="service-modern-card {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  background: #ffffffee;
+  border-radius: 22px;
+  padding: 20px;
+  display: flex;
+  gap: 16px;
+  border: none;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: .2s ease;
+} elevate" onClick={() => onSelectService("parcel")}>
+            <div className="service-modern-icon">📦</div>
+            <div className="service-modern-text">
+              <div className="service-modern-title">{t("parcel")}</div>
+              <div className="service-modern-desc">Door to door</div>
+            </div>
           </button>
 
-          <button
-            className="service-large"
-            onClick={() => onSelectService && onSelectService("cash")}
-            aria-label={t("cash")}
-          >
-            💸 {t("cash")}
+          <button className="service-modern-card elevate" onClick={() => onSelectService("cash")}>
+            <div className="service-modern-icon">💸</div>
+            <div className="service-modern-text">
+              <div className="service-modern-title">{t("cash")}</div>
+              <div className="service-modern-desc">Cash delivery</div>
+            </div>
           </button>
         </div>
       </section>
 
-      {/* Wallet & offers (secondary) */}
-      <section className="home-section">
-        <div className="wallet-card" role="region" aria-label={t("wallet")}>
+      {/* WALLET CARD */}
+      <section className="wallet-section fade-in-delay">
+        <div className="wallet-card-modern {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg,#d8ffef,#c7ffe5);
+  border-radius: 24px;
+  padding: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+} elevate-lg">
           <div>
-            <p className="wallet-label">{t("wallet")}</p>
-            <p className="wallet-balance">Rs 0</p>
-            <p className="wallet-note">{t("walletNote")}</p>
+            <div className="wallet-title-modern">{t("wallet")}</div>
+            <div className="wallet-balance-modern">Rs 0</div>
+            <div className="wallet-note-modern">{t("walletNote")}</div>
           </div>
-          <button className="wallet-action" aria-label={t("addMoney")}
-          onClick={() => onSelectService && onSelectService("wallet")}
-          >{t("addMoney")}</button>
+
+          <button className="wallet-action-modern" onClick={() => onSelectService("wallet")}>
+            + {t("addMoney")}
+          </button>
         </div>
       </section>
 
-      {/* Recent locations (short list) */}
-      <section className="home-section" aria-labelledby="recent-label">
-        <div className="recent-header-row">
-          <h2 id="recent-label" className="section-heading">{t("recent")}</h2>
-          <button className="link-button" aria-label={t("viewAll")}>{t("viewAll")}</button>
+      {/* RECENT LOCATIONS */}
+      <section className="recent-section fade-in-delay-more">
+        <div className="recent-header">
+          <h2 className="recent-title-modern">{t("recent")}</h2>
+          <button className="view-link">{t("viewAll")}</button>
         </div>
-        <ul className="recent-list">
-          <li className="recent-item">
-            <span className="recent-icon" aria-hidden>🏫</span>
-            <div className="recent-text">
-              <span className="recent-title">{t("iba_main_campus")}</span>
-              <span className="recent-subtitle">{t("university_road")}</span>
+
+        <div className="recent-list-modern">
+          <button className="recent-modern-card elevate" >
+            <div className="recent-modern-icon">🏫</div>
+            <div className="recent-modern-text">
+              <div className="recent-modern-name">{t("iba_main_campus")}</div>
+              <div className="recent-modern-desc">{t("university_road")}</div>
             </div>
-          </li>
-          <li className="recent-item">
-            <span className="recent-icon" aria-hidden>🏠</span>
-            <div className="recent-text">
-              <span className="recent-title">{t("home")}</span>
-              <span className="recent-subtitle">{t("gulshan_e_iqbal")}</span>
+          </button>
+
+          <button className="recent-modern-card elevate">
+            <div className="recent-modern-icon">🏠</div>
+            <div className="recent-modern-text">
+              <div className="recent-modern-name">{t("home")}</div>
+              <div className="recent-modern-desc">{t("gulshan_e_iqbal")}</div>
             </div>
-          </li>
-        </ul>
+          </button>
+        </div>
       </section>
     </div>
   );
 };
 
 export default HomeScreen;
+

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+// RideScreen.js
+import React from "react";
 
 const rideDict = {
   en: {
@@ -23,82 +24,90 @@ const rideDict = {
   },
 };
 
-const RideScreen = ({ 
-  onBack, 
-  onEditPickup, 
-  onEditDropoff, 
-  pickupLocation, 
+const RideScreen = ({
+  onBack,
+  onEditPickup,
+  onEditDropoff,
+  pickupLocation,
   dropoffLocation,
   onContinue,
   locale = "en",
   accessibilityOn = false,
   readAloud = () => {},
- }) => {
-  const t = (key) => { return (rideDict[locale] && rideDict[locale][key]) || rideDict.en[key] || key; };
-
+}) => {
+  const t = (key) =>
+    (rideDict[locale] && rideDict[locale][key]) ||
+    rideDict.en[key] ||
+    key;
 
   return (
     <div className="ride-screen">
+
+      {/* BACK BUTTON */}
       <div className="ride-back-row">
-  <button
-    className="back-chip"
-    onClick={onBack}
-    aria-label="Go back to previous screen"
-  >
-    <span className="back-arrow">⟵</span>
-    <span className="back-text">Go back</span>
-  </button>
-</div>
+        <button
+          className="back-chip"
+          onClick={onBack}
+          aria-label="Go back to previous screen"
+        >
+          <span className="back-arrow">⟵</span>
+          <span className="back-text">Go back</span>
+        </button>
+      </div>
 
-<section className="ride-section ride-header-card">
-  <span className="ride-flow-label">{t("flowLabel")}</span>
-  <h1 className="ride-title">{t("title")}</h1>
-</section>
+      {/* HEADER CARD */}
+      <section className="ride-section ride-header-card">
+        <span className="ride-flow-label">{t("flowLabel")}</span>
+        <h1 className="ride-title">{t("title")}</h1>
+      </section>
 
+      {/* SUMMARY CARD */}
       <section className="ride-section summary-card">
-  <p className="summary-title">{t("yourTrip")}</p>
+        <p className="summary-title">{t("yourTrip")}</p>
 
-  <button className="summary-row" onClick={onEditPickup}>
-    <span className="summary-dot pickup-dot" />
-    <div className="summary-texts">
-      <span className="summary-label">{t("pickup")}</span>
-      <span className="summary-value">{pickupLocation}</span>
-    </div>
-    <span className="summary-edit">{t("change")}</span>
-  </button>
+        <button className="summary-row" onClick={onEditPickup}>
+          <span className="summary-dot pickup-dot" />
+          <div className="summary-texts">
+            <span className="summary-label">{t("pickup")}</span>
+            <span className="summary-value">{pickupLocation}</span>
+          </div>
+          <span className="summary-edit">{t("change")}</span>
+        </button>
 
-  <button className="summary-row" onClick={onEditDropoff}>
-    <span className="summary-dot dropoff-dot" />
-    <div className="summary-texts">
-      <span className="summary-label">{t("dropoff")}</span>
-      <span className="summary-value">
-        {dropoffLocation || "Choose destination"}
-      </span>
-    </div>
-    <span className="summary-edit">{t("change")}</span>
-  </button>
-</section>
+        <button className="summary-row" onClick={onEditDropoff}>
+          <span className="summary-dot dropoff-dot" />
+          <div className="summary-texts">
+            <span className="summary-label">{t("dropoff")}</span>
+            <span className="summary-value">
+              {dropoffLocation || "Choose destination"}
+            </span>
+          </div>
+          <span className="summary-edit">{t("change")}</span>
+        </button>
+      </section>
 
-<section className="ride-section">
-  <h2 className="section-heading">{t("routePreview")}</h2>
-  <div className="ride-map-wrapper route-map">
-    <img
-      src="/map_route.png"
-      alt="Map preview of your route"
-      className="ride-map-image"
-    />
+      {/* MAP SECTION */}
+      <section className="ride-section">
+        <h2 className="section-heading">{t("routePreview")}</h2>
 
-    {/* fake pins on top of the image */}
-    <div className="route-pin route-pin--pickup" />
-    <div className="route-pin route-pin--dropoff" />
-  </div>
-</section>
+        <div className="ride-map-wrapper route-map">
+          <img
+            src="/map_route.png"
+            alt="Map preview of your route"
+            className="ride-map-image"
+          />
 
+          {/* Pins */}
+          <div className="route-pin route-pin--pickup" />
+          <div className="route-pin route-pin--dropoff" />
+        </div>
+      </section>
 
-<button className="ride-primary-btn" onClick={onContinue}>
-{t("continue")}
-</button>
-      
+      {/* CONTINUE BUTTON */}
+      <button className="ride-primary-btn" onClick={onContinue}>
+        {t("continue")}
+      </button>
+
     </div>
   );
 };
