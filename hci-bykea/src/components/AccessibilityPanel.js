@@ -14,6 +14,11 @@ export default function AccessibilityPanel({
   setLocale,
   readAloud,
   readCurrent,
+  startListening,
+  stopListening,
+  isListening,
+  voiceCommandsOn,
+  setVoiceCommandsOn,
 }) {
   const [voiceEnabled, setVoiceEnabled] = useState(true);
 
@@ -149,11 +154,11 @@ export default function AccessibilityPanel({
         <label
           style={{ display: "block", fontWeight: 700, marginBottom: 6 }}
         >
-          Voice commands (coming)
+          Voice commands 
         </label>
 
         <button
-          disabled
+          onClick={startListening} disabled={isListening}
           style={{
             padding: 10,
             borderRadius: 8,
@@ -162,8 +167,13 @@ export default function AccessibilityPanel({
             color: "#999",
           }}
         >
-          Start voice command (coming soon)
+          Start voice command 
         </button>
+
+        <button onClick={stopListening} disabled={!isListening}>
+          ⏹ Stop listening
+        </button>
+
       </div>
     </div>
   );
