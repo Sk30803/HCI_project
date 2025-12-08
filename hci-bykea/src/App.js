@@ -56,6 +56,10 @@ useEffect(() => {
     if (handleVoiceCommandRef.current) {
       handleVoiceCommandRef.current(text);
     }
+    setTimeout(() => {
+      recognitionRef.current?.start();
+    }, 300);
+
   };
 
   recognitionRef.current = recognition;
@@ -177,13 +181,12 @@ const getScreenSummary = () => {
       );
 
     case "vehicle":
-      const minFare = baseFares[selectedVehicle] || 0;
       if (vc) {
         return tr(
-          "Say 1 to choose bike. 2 to choose rickshaw. 3 for Car. 4 for Ac-Car",
-          "وائس کمانڈ آن ہے۔ ایک بولیں پک اپ بدلنے کے لیے، دو بولیں ڈراپ آف بدلنے کے لیے، تین بولیں گاڑی منتخب کرنے کے لیے آگے بڑھنے کے لیے۔"
-        );
+          'Say 1 to choose bike, 2 for rickshaw, 3 for car, 4 for ac car, 5 to continue'
+          );
       }
+      const minFare = baseFares[selectedVehicle] || 0;
       return tr(
         `Choose vehicle. Selected: ${selectedVehicle || "none"}. Recommended minimum fare is Rs ${minFare || "—"}.`,
         `گاڑی منتخب کریں۔ منتخب شدہ: ${selectedVehicle || "کوئی نہیں"}. کم از کم کرایہ Rs ${selectedFare || "—"}.`
@@ -192,8 +195,8 @@ const getScreenSummary = () => {
     case "fare":
       if (vc) {
         return tr(
-          'Say 1 to Continue'
-        )
+          'Say 1 to continue'
+          );
       }
       return tr(
         `Set your fare. Current value is Rs ${selectedFare || "—"}. your current payment method. ${paymentMethod||"—"}.  Continue to get driver offers.`,
