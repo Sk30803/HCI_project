@@ -21,6 +21,8 @@ function App() {
   const [selectedOffer, setSelectedOffer] = useState(null);
   const [paymentMethod,setPaymentMethod] = useState("cash");
   const [isListening, setIsListening] = useState(false);
+  const [voiceCommandsOn, setVoiceCommandsOn] = useState(false);
+  const recognitionActiveRef =  React.useRef(false);
 
 
   const baseFares = {
@@ -46,9 +48,19 @@ useEffect(() => {
   recognition.lang = "en-US";
   recognition.continuous = true;
 
-  recognition.onstart = () => setIsListening(true);
-  recognition.onend = () => setIsListening(false);
-  recognition.onerror = () => setIsListening(false);
+  recognition.onstart = () => {
+    setIsListening(true);
+    recognitionActiveRef.current = true;
+  };
+  recognition.onend = () => {
+    setIsListening(false);
+    recognitionActiveRef.current = false;
+  };
+ 
+  recognition.onerror = () => {
+    setIsListening(false);
+    recognitionActiveRef.current = false;
+  };
 
   recognition.onresult = (e) => {
     const text = e.results[0][0].transcript.toLowerCase();
@@ -56,10 +68,6 @@ useEffect(() => {
     if (handleVoiceCommandRef.current) {
       handleVoiceCommandRef.current(text);
     }
-    setTimeout(() => {
-      recognitionRef.current?.start();
-    }, 300);
-
   };
 
   recognitionRef.current = recognition;
@@ -67,16 +75,24 @@ useEffect(() => {
 
 
 const startListening = () => {
-  if (!recognitionRef.current) {
-    alert("Voice not supported");
+  if (!recognitionRef.current) return;
+
+  if (recognitionActiveRef.current) {
+    // already listening → do nothing
     return;
   }
+
   recognitionRef.current.start();
 };
 
 const stopListening = () => {
-  recognitionRef.current?.stop();
+  if (!recognitionRef.current) return;
+
+  if (recognitionActiveRef.current) {
+    recognitionRef.current.stop();
+  }
 };
+
 
 const getNumberFromSpeech = (text) => {
   if (text.includes("one") || text.includes("1")) return 1;
@@ -145,7 +161,7 @@ const getScreenSummary = () => {
 
   switch (currentScreen) {
     case "home":
-      if (vc) {
+      if (voiceCommandsOn) {
         return tr(
           "Voice commands are ON. Say 1 to book a ride, 2 to deliver a parcel, 3 to open Bykea Wallet.",
           "وائس کمانڈ آن ہے۔ ایک بولیں رائیڈ بک کرنے کے لیے، دو بولیں پارسل بھیجنے کے لیے، تین بولیں بائیکیا والیٹ کھولنے کے لیے۔"
@@ -157,7 +173,7 @@ const getScreenSummary = () => {
       );
 
     case "rides":
-      if (vc) {
+      if (voiceCommandsOn) {
         return tr(
           "Voice commands are ON. Say 1 to edit pickup, 2 to edit dropoff, 3 to continue and choose a vehicle.",
           "وائس کمانڈ آن ہے۔ ایک بولیں پک اپ بدلنے کے لیے، دو بولیں ڈراپ آف بدلنے کے لیے، تین بولیں گاڑی منتخب کرنے کے لیے آگے بڑھنے کے لیے۔"
@@ -181,7 +197,7 @@ const getScreenSummary = () => {
       );
 
     case "vehicle":
-      if (vc) {
+      if (voiceCommandsOn) {
         return tr(
           'Say 1 to choose bike, 2 for rickshaw, 3 for car, 4 for ac car, 5 to continue'
           );
@@ -193,7 +209,7 @@ const getScreenSummary = () => {
       );
 
     case "fare":
-      if (vc) {
+      if (voiceCommandsOn) {
         return tr(
           'Say 1 to continue'
           );
@@ -280,6 +296,42 @@ const readAloud = (text, lang = null) => {
   utter.rate = 0.95;
   window.speechSynthesis.speak(utter);
 };
+
+const readScreenThenListen = () => {
+  const text = getScreenSummary();
+  if (!text) return;
+
+  if (!("speechSynthesis" in window)) {
+    // If TTS not available, just start listening immediately
+    startListening();
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = "en-US";
+  utter.rate = 0.95;
+
+  utter.onend = () => {
+    // Only start listening if voice mode is still ON
+    if (voiceCommandsOn) {
+      startListening();
+    }
+  };
+
+  window.speechSynthesis.speak(utter);
+};
+
+useEffect(() => {
+  if (!accessibilityOn || !voiceCommandsOn) {
+    // if user turns voice mode off, stop listening
+    stopListening();
+    return;
+  }
+
+  // Auto read + then listen
+  readScreenThenListen();
+}, [currentScreen, voiceCommandsOn, accessibilityOn]);
 
 
   const renderScreen = () => {
