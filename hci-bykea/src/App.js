@@ -161,7 +161,7 @@ const getScreenSummary = () => {
 
   switch (currentScreen) {
     case "home":
-      if (voiceCommandsOn) {
+      if (vc) {
         return tr(
           "Voice commands are ON. Say 1 to book a ride, 2 to deliver a parcel, 3 to open Bykea Wallet.",
           "وائس کمانڈ آن ہے۔ ایک بولیں رائیڈ بک کرنے کے لیے، دو بولیں پارسل بھیجنے کے لیے، تین بولیں بائیکیا والیٹ کھولنے کے لیے۔"
