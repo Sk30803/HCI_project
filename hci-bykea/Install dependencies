@@ -1,0 +1,15 @@
+# for map (react-leaflet + leaflet)
+npm install react-leaflet leaflet
+
+# optional but recommended for better voice UX & polyfills (not strictly required)
+# no npm package required for Web Speech API; it's browser built-in (Chrome/Edge).
+
+Add Leaflet CSS into app:
+/* in src/index.css or App.css */
+@import url('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
+
+/* Small helpful map container rule */
+.leaflet-container {
+  width: 100%;
+  height: 300px; /* adjust as needed */
+}
