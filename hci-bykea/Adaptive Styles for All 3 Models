@@ -1,0 +1,24 @@
+/* SENIOR MODEL */
+.model-senior * {
+  font-size: 20px;
+  padding: 14px;
+}
+
+/* DISABILITY MODEL */
+.model-disability * {
+  outline: 2px solid transparent;
+}
+
+/* LOW-LITERACY MODEL */
+.model-lowLiteracy * {
+  font-size: 24px;
+}
+
+.model-lowLiteracy input {
+  display: none;
+}
+
+.model-lowLiteracy button {
+  font-size: 32px;
+  padding: 20px;
+}
