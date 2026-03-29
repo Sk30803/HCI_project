@@ -1,0 +1,121 @@
+// src/components/BookingMode.js
+import React, { useState } from "react";
+import useSpeech from "../hooks/useSpeech";
+import MapPicker from "./MapPicker";
+
+export default function BookingMode({ userModel, onBookingConfirmed }) {
+  const { speak, startListening, stopListening } = useSpeech();
+  const [pickup, setPickup] = useState(null);
+  const [dropoff, setDropoff] = useState(null);
+  const [packageType, setPackageType] = useState("small");
+  const [paymentMethod, setPaymentMethod] = useState("cash");
+  const [listening, setListening] = useState(false);
+
+  const urduPrompts = {
+    welcome: "Parcel bhejne ka form. Pickup aur drop-off select karen.",
+    sayPickup: "Pickup ka address bolein",
+    sayDropoff: "Drop-off ka address bolein",
+    confirm: "Kya aap confirm karna chahte hain?",
+    confirmed: "Aap ka delivery order confirm hogaya."
+  };
+
+  const handleVoicePickup = () => {
+    if (listening) { stopListening(); setListening(false); return; }
+    setListening(true);
+    speak("Please speak the pickup location", userModel === "lowLiteracy" ? "ur-PK" : "en-US");
+    startListening((text) => {
+      stopListening();
+      setListening(false);
+      // naive: set pickup as text string - in a production app you'd geocode
+      setPickup({ label: text, lat: null, lng: null });
+      speak(`Pickup set to ${text}`, "ur-PK");
+    }, userModel === "lowLiteracy" ? "ur-PK" : "en-US");
+  };
+
+  const handleConfirm = () => {
+    const details = {
+      pickup,
+      dropoff,
+      packageType,
+      paymentMethod,
+      rider: { name: "Ali Khan", rating: 4.9, bike: "LEA-2345" },
+    };
+    // Provide audio feedback in Urdu for lowLiteracy or selected language
+    if (userModel === "lowLiteracy" || userModel === "senior") {
+      speak(urduPrompts.confirm, "ur-PK");
+      setTimeout(() => {
+        speak(urduPrompts.confirmed, "ur-PK");
+        onBookingConfirmed(details);
+      }, 900);
+    } else {
+      speak("Delivery confirmed", "en-US");
+      onBookingConfirmed(details);
+    }
+  };
+
+  return (
+    <div className={`booking-card ${userModel}`}>
+      <h2>{userModel === "lowLiteracy" ? "📦 Parcel" : "Send a Parcel"}</h2>
+
+      {/* Map Picker */}
+      <MapPicker
+        pickup={pickup}
+        dropoff={dropoff}
+        setPickup={setPickup}
+        setDropoff={setDropoff}
+        onChange={({ pickup: p, dropoff: d }) => {
+          setPickup(p || pickup);
+          setDropoff(d || dropoff);
+        }}
+      />
+
+      {/* Buttons for voice input (useful for low-literacy & disabilities) */}
+      <div style={{ marginTop: 8 }}>
+        <button onClick={handleVoicePickup}>
+          {listening ? "Listening..." : (userModel === "lowLiteracy" ? "🎤" : "Record Pickup")}
+        </button>
+
+        <button onClick={() => {
+          // If user selected the map pins already, we can prompt drop-off voice
+          setListening(true);
+          speak(urduPrompts.sayDropoff, "ur-PK");
+          startListening((text) => {
+            stopListening();
+            setListening(false);
+            setDropoff({ label: text, lat: null, lng: null });
+            speak(`Drop-off set to ${text}`, "ur-PK");
+          }, "ur-PK");
+        }}>
+          {userModel === "lowLiteracy" ? "🎤" : "Record Drop-off"}
+        </button>
+      </div>
+
+      {/* Package type & Payment */}
+      <div style={{ marginTop: 12 }}>
+        <div>
+          <label>Package:</label>
+          <select value={packageType} onChange={(e) => setPackageType(e.target.value)}>
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="fragile">Fragile</option>
+          </select>
+        </div>
+
+        <div style={{ marginTop: 8 }}>
+          <label>Payment:</label>
+          <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
+            <option value="cash">Cash</option>
+            <option value="wallet">Wallet</option>
+            <option value="card">Card</option>
+          </select>
+        </div>
+      </div>
+
+      <div style={{ marginTop: 16 }}>
+        <button onClick={handleConfirm}>
+          {userModel === "lowLiteracy" ? "✔" : "Confirm Delivery"}
+        </button>
+      </div>
+    </div>
+  );
+}
