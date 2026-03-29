@@ -1,0 +1,92 @@
+// src/components/TrackingMode.js
+import React, { useEffect, useState, useRef } from "react";
+import useSpeech from "../hooks/useSpeech";
+import { MapContainer, TileLayer, Marker, Polyline } from "react-leaflet";
+
+export default function TrackingMode({ userModel, deliveryDetails }) {
+  const { speak } = useSpeech();
+  const [riderPos, setRiderPos] = useState({ lat: 24.8615, lng: 67.0099 }); // sample start
+  const [status, setStatus] = useState("assigned"); // assigned -> arriving -> picked -> delivered
+  const intervalRef = useRef(null);
+
+  // Model-based speech on mount
+  useEffect(() => {
+    if (userModel === "lowLiteracy" || userModel === "senior") {
+      speak("Rider aap ke paas aa raha hai", "ur-PK");
+    } else {
+      speak("Rider is on the way", "en-US");
+    }
+  }, []);
+
+  // Simple simulation of rider moving towards dropoff (if dropoff coords exist)
+  useEffect(() => {
+    const target = deliveryDetails?.dropoff;
+    if (!target || !target.lat) {
+      // nothing to simulate - keep static
+      return;
+    }
+    // convert to numbers if needed
+    const tx = target.lat || parseFloat(target.lat || 24.86);
+    const ty = target.lng || parseFloat(target.lng || 67.00);
+    intervalRef.current = setInterval(() => {
+      setRiderPos(prev => {
+        const lat = prev.lat + (tx - prev.lat) * 0.08;
+        const lng = prev.lng + (ty - prev.lng) * 0.08;
+        // determine status based on distance
+        const distLat = Math.abs(lat - tx);
+        if (distLat < 0.0008) {
+          setStatus("picked");
+        } else if (distLat < 0.005) {
+          setStatus("arriving");
+        }
+        return { lat, lng };
+      });
+    }, 1500);
+    return () => clearInterval(intervalRef.current);
+  }, [deliveryDetails]);
+
+  useEffect(() => {
+    if (status === "arriving") speak(userModel === "lowLiteracy" ? "Rider nazdeek hai" : "Rider arriving", "ur-PK");
+    if (status === "picked") {
+      speak(userModel === "lowLiteracy" ? "Parcel pickup hogaya" : "Parcel picked up", "ur-PK");
+      setTimeout(() => {
+        setStatus("delivered");
+        speak(userModel === "lowLiteracy" ? "Parcel deliver hogaya" : "Delivered", "ur-PK");
+      }, 5000);
+    }
+  }, [status]);
+
+  return (
+    <div className={`tracking-card ${userModel}`}>
+      <h2>{userModel === "lowLiteracy" ? "🛵📦" : "Delivery in Progress"}</h2>
+
+      {/* Map showing rider */}
+      <MapContainer center={[riderPos.lat, riderPos.lng]} zoom={13} style={{ height: 280, width: "100%" }}>
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        <Marker position={[riderPos.lat, riderPos.lng]} />
+        {deliveryDetails && deliveryDetails.dropoff && deliveryDetails.dropoff.lat && (
+          <Polyline positions={[[riderPos.lat, riderPos.lng], [deliveryDetails.dropoff.lat, deliveryDetails.dropoff.lng]]} />
+        )}
+      </MapContainer>
+
+      <div style={{ marginTop: 10 }}>
+        <div>Rider: {deliveryDetails.rider.name} ({deliveryDetails.rider.bike})</div>
+        <div>Status: {status}</div>
+        <div>ETA: {status === "delivered" ? "Delivered" : "≈ 8-12 mins"}</div>
+      </div>
+
+      <div style={{ marginTop: 12 }}>
+        <button onClick={() => {
+          // Speak location on demand
+          speak(userModel === "lowLiteracy" ? "Rider ki location: nazdeek" : `Rider is ${status}`, "ur-PK");
+        }}>🔊 Announce Status</button>
+
+        <button onClick={() => alert("Call rider - implement phone call via tel: url")}>📞 Call Rider</button>
+
+        <button onClick={() => alert("Share trip - open share sheet with link")}>📤 Share Trip</button>
+
+        <button onClick={() => alert("Report issue - open support")}>⚠️ Contact Support</button>
+      </div>
+    </div>
+  );
+}
