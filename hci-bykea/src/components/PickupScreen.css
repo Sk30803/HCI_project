@@ -1,0 +1,172 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.pickup-screen {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Back Button */
+.ride-back-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.back-chip {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    color: #28a745; /* Green text */
+    border: 2px solid #28a745; /* Green border */
+    border-radius: 20px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.back-chip:hover {
+    background-color: #e8f5e9; /* Light green on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+.back-arrow {
+    margin-right: 5px;
+}
+
+/* Header */
+.pickup-header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.ride-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.ride-subtitle {
+    font-size: 16px;
+    color: #666;
+}
+
+/* Search Input and Suggestions */
+.pickup-search-section {
+    margin-bottom: 15px;
+}
+
+.pickup-search {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.pickup-search:focus {
+    border-color: #28a745; /* Green focus border */
+    outline: none;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* Green shadow */
+}
+
+.pickup-suggestions {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.pickup-suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+    text-align: left;
+    color: #28a745; /* Green text */
+    transition: background-color 0.3s;
+}
+
+.pickup-suggestion-item:hover {
+    background-color: #e8f5e9; /* Light green on hover */
+}
+
+/* Map Section */
+.pickup-map-section {
+    margin: 20px 0;
+}
+
+.section-heading {
+    font-size: 20px;
+    margin: 10px 0;
+    color: #333;
+}
+
+.pickup-map-wrapper {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.pickup-map-image {
+    width: 100%;
+    border-radius: 5px;
+}
+
+/* Location Sections */
+.pickup-location-section {
+    margin-bottom: 15px;
+}
+
+.pickup-row {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.pickup-row:hover {
+    background-color: #e8f5e9; /* Light green on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+.pickup-icon {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.pickup-texts {
+    flex: 1;
+}
+
+.pickup-title {
+    font-weight: bold;
+    color: #333;
+}
+
+.pickup-subtitle {
+    color: #666;
+}
+
+/* Current Location Section */
+.pickup-current-location-section {
+    margin-top: 20px;
+}
+
+/* Small Hint */
+.pickup-small-hint {
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+}

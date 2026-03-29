@@ -1,0 +1,125 @@
+/* --------- Layout ---------- */
+.vehicle-screen {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px 18px;
+  font-family: "Inter", sans-serif;
+}
+
+/* --------- Vehicle Cards Container ---------- */
+.vehicle-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+/* --------- Vehicle Card ---------- */
+.vehicle-card {
+  width: 100%;
+  background: #ffffffee;
+  padding: 18px 16px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+
+  /* Gestalt: Common region + smooth interaction */
+  transition: transform .18s ease, box-shadow .2s ease, background .2s ease;
+}
+
+/* Hover / Active effects — Fitts' Law */
+.vehicle-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.10);
+}
+
+.vehicle-card:active {
+  transform: scale(0.98);
+}
+
+/* Selected State — Visibility Principle */
+.vehicle-card--selected {
+  background: linear-gradient(135deg, #e2fcef, #d2f9e8);
+  border: 2px solid #10b981;
+  box-shadow: 0 6px 20px rgba(16,185,129,0.25);
+}
+
+/* --------- Icon ---------- */
+.vehicle-icon {
+  font-size: 36px;
+  background: #ecfdf5;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --------- Info Text ---------- */
+.vehicle-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.vehicle-name {
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.vehicle-detail {
+  font-size: 13px;
+  color: #666;
+  margin-top: 2px;
+}
+
+/* --------- Meta Info ---------- */
+.vehicle-meta {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  gap: 2px;
+}
+
+.vehicle-eta {
+  font-size: 13px;
+  color: #059669;
+}
+
+.vehicle-price {
+  font-weight: 700;
+  font-size: 16px;
+  margin-top: 2px;
+}
+
+/* --------- Primary Button ---------- */
+.ride-primary-btn {
+  width: 100%;
+  padding: 18px;
+  font-size: 18px;
+  border-radius: 16px;
+  border: none;
+  color: white;
+  font-weight: 700;
+
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 8px 20px rgba(16,185,129,0.25);
+
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .22s ease;
+}
+
+.ride-primary-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 26px rgba(16,185,129,0.35);
+}
+
+.ride-primary-btn:active {
+  transform: scale(0.97);
+}

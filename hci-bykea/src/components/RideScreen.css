@@ -1,0 +1,469 @@
+/* ========================================
+   HCI-OPTIMIZED RIDE SCREEN DESIGN
+   Principles: Fitts's Law, Gestalt, Affordance, Feedback, Visibility
+   ======================================== */
+
+/* === CONTAINER === */
+.ride-screen {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f0fdf7 0%, #ffffff 100%);
+  padding: 16px 20px 24px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* === BACK BUTTON === */
+/* HCI: Fitts's Law - Easy to reach, top-left positioning (natural eye flow) */
+.ride-back-row {
+  margin-bottom: 20px;
+  animation: slideInLeft 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.back-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* HCI: Feedback - Clear hover state */
+.back-chip:hover {
+  background: #f8fafc;
+  border-color: #10b981;
+  transform: translateX(-4px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+}
+
+.back-chip:active {
+  transform: translateX(-2px);
+}
+
+.back-arrow {
+  font-size: 18px;
+  transition: transform 0.25s ease;
+}
+
+.back-chip:hover .back-arrow {
+  transform: translateX(-3px);
+}
+
+.back-text {
+  font-weight: 600;
+}
+
+/* === HEADER CARD === */
+/* HCI: Visibility - Clear visual hierarchy and progress indication */
+.ride-header-card {
+  background: white;
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 2px solid #f0fdf7;
+  animation: slideInDown 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ride-flow-label {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #10b981;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 8px;
+  padding: 4px 12px;
+  background: #d1fae5;
+  border-radius: 6px;
+}
+
+.ride-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 8px 0 0 0;
+  letter-spacing: -0.5px;
+  line-height: 1.3;
+}
+
+/* === SUMMARY CARD === */
+/* HCI: Gestalt Proximity & Continuity - Related items grouped with visual connection */
+.summary-card {
+  background: white;
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 2px solid #e5e7eb;
+  animation: slideInUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation-delay: 0.1s;
+  animation-fill-mode: both;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.summary-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.2px;
+}
+
+.summary-container {
+  position: relative;
+}
+
+/* HCI: Fitts's Law - Large touch targets for easy interaction */
+.summary-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  background: #f8fafc;
+  border: 2px solid #e5e7eb;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: left;
+  margin-bottom: 12px;
+  position: relative;
+  min-height: 72px;
+}
+
+.summary-row:last-child {
+  margin-bottom: 0;
+}
+
+/* HCI: Feedback - Clear hover indication with depth */
+.summary-row:hover {
+  background: #f0fdf7;
+  border-color: #10b981;
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+}
+
+.summary-row:active {
+  transform: translateX(2px);
+}
+
+/* Icon Wrapper */
+.summary-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* HCI: Affordance - Color-coded dots for visual distinction */
+.summary-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: block;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.25s ease;
+}
+
+.summary-row:hover .summary-dot {
+  transform: scale(1.2);
+}
+
+.pickup-dot {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.dropoff-dot {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+/* Connecting Line between pickup and dropoff */
+/* HCI: Gestalt Continuity - Visual connection showing flow */
+.summary-connector {
+  position: absolute;
+  left: 34px;
+  top: 72px;
+  width: 3px;
+  height: 20px;
+  background: linear-gradient(180deg, #10b981 0%, #f59e0b 100%);
+  border-radius: 2px;
+  z-index: 1;
+}
+
+.summary-texts {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+/* HCI: Visibility - Clear label hierarchy */
+.summary-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* HCI: Affordance - Clear action indicator */
+.summary-edit {
+  font-size: 13px;
+  font-weight: 600;
+  color: #10b981;
+  flex-shrink: 0;
+  padding: 6px 12px;
+  background: #d1fae5;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.summary-row:hover .summary-edit {
+  background: #10b981;
+  color: white;
+  transform: translateX(2px);
+}
+
+/* === MAP SECTION === */
+/* HCI: Gestalt Figure-ground - Clear visual separation */
+.map-section {
+  margin-bottom: 20px;
+  animation: slideInUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation-delay: 0.2s;
+  animation-fill-mode: both;
+}
+
+.section-heading {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 12px 4px;
+  letter-spacing: -0.2px;
+}
+
+.ride-map-wrapper {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 2px solid #e5e7eb;
+}
+
+.ride-map-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* HCI: Visibility - Clear location markers */
+.route-pin {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  animation: pinDrop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation-fill-mode: both;
+}
+
+@keyframes pinDrop {
+  from {
+    transform: translateY(-100px) scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.route-pin--pickup {
+  top: 20%;
+  left: 20%;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  animation-delay: 0.3s;
+}
+
+.route-pin--dropoff {
+  bottom: 25%;
+  right: 20%;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  animation-delay: 0.5s;
+}
+
+.pin-icon {
+  font-size: 22px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+/* === CONTINUE BUTTON === */
+/* HCI: Fitts's Law - Large primary action at bottom (thumb-friendly) */
+.ride-footer {
+  position: sticky;
+  bottom: 0;
+  padding: 16px 0 0;
+  background: linear-gradient(180deg, transparent 0%, white 20%, white 100%);
+  animation: slideInUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation-delay: 0.3s;
+  animation-fill-mode: both;
+}
+
+.ride-primary-btn {
+  width: 100%;
+  min-height: 56px;
+  padding: 16px 24px;
+  border-radius: 16px;
+  border: none;
+  font-size: 18px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  cursor: pointer;
+  box-shadow: 
+    0 8px 24px rgba(16, 185, 129, 0.35),
+    0 4px 12px rgba(16, 185, 129, 0.2);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer effect */
+.ride-primary-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.6s;
+}
+
+.ride-primary-btn:hover::before {
+  left: 100%;
+}
+
+/* HCI: Feedback - Strong visual response */
+.ride-primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 32px rgba(16, 185, 129, 0.45),
+    0 6px 16px rgba(16, 185, 129, 0.3);
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+.ride-primary-btn:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 4px 16px rgba(16, 185, 129, 0.35),
+    0 2px 8px rgba(16, 185, 129, 0.2);
+}
+
+/* === ACCESSIBILITY === */
+/* HCI: Visibility - Clear focus indicators */
+.back-chip:focus,
+.summary-row:focus,
+.ride-primary-btn:focus {
+  outline: 3px solid #10b981;
+  outline-offset: 3px;
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 380px) {
+  .ride-screen {
+    padding: 14px 16px 20px;
+  }
+
+  .ride-title {
+    font-size: 22px;
+  }
+
+  .summary-row {
+    min-height: 68px;
+    padding: 12px;
+  }
+
+  .ride-map-wrapper {
+    height: 240px;
+  }
+
+  .ride-primary-btn {
+    min-height: 52px;
+    font-size: 17px;
+  }
+}
+
+/* === LOADING STATES === */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.summary-row[disabled],
+.ride-primary-btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  animation: pulse 1.5s ease-in-out infinite;
+}

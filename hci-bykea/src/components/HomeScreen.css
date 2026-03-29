@@ -1,0 +1,471 @@
+/* ========================================
+   HCI-OPTIMIZED HOMESCREEN DESIGN
+   Principles: Fitts's Law, Gestalt, Affordance, Visibility
+   ======================================== */
+
+/* === CONTAINER & LAYOUT === */
+.home-container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f0fdf7 0%, #f8fdfb 50%, #ffffff 100%);
+  padding: 20px;
+  padding-bottom: 80px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* === HERO SECTION === */
+/* HCI: Fitts's Law - Large primary action for easy targeting */
+.hero-section {
+  margin-bottom: 36px;
+  animation: fadeSlideDown 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes fadeSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 20px 0;
+  line-height: 1.3;
+  letter-spacing: -0.5px;
+}
+
+/* === PRIMARY CTA BUTTON === */
+/* HCI PRINCIPLES APPLIED:
+   - Fitts's Law: Large target area (min 48px height)
+   - Affordance: Button-like appearance with depth
+   - Visibility: High contrast, prominent positioning
+   - Feedback: Clear hover/active states
+*/
+.primary-cta {
+  width: 100%;
+  min-height: 64px;
+  padding: 20px 28px;
+  border-radius: 18px;
+  border: none;
+  font-size: 20px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  cursor: pointer;
+  box-shadow: 
+    0 10px 30px rgba(16, 185, 129, 0.35),
+    0 4px 12px rgba(16, 185, 129, 0.2);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  /* Gestalt: Figure-ground - Clear separation from background */
+  border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Shimmer effect for prominence */
+.primary-cta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: left 0.6s;
+}
+
+.primary-cta:hover::before {
+  left: 100%;
+}
+
+/* HCI: Feedback - Clear hover state */
+.primary-cta:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 14px 40px rgba(16, 185, 129, 0.45),
+    0 6px 16px rgba(16, 185, 129, 0.3);
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+/* HCI: Feedback - Active state for touch response */
+.primary-cta:active {
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 
+    0 6px 20px rgba(16, 185, 129, 0.35),
+    0 2px 8px rgba(16, 185, 129, 0.2);
+}
+
+.cta-icon {
+  font-size: 28px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* === SECTION STYLING === */
+.service-wrapper,
+.wallet-section,
+.recent-section {
+  margin-bottom: 28px;
+  animation: fadeSlideUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation-fill-mode: both;
+}
+
+.service-wrapper {
+  animation-delay: 0.1s;
+}
+
+.wallet-section {
+  animation-delay: 0.2s;
+}
+
+.recent-section {
+  animation-delay: 0.3s;
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-label {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 14px 4px;
+  letter-spacing: -0.3px;
+}
+
+/* === SERVICE GRID === */
+/* HCI: Gestalt Proximity - Related items grouped together */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+/* HCI PRINCIPLES FOR SERVICE CARDS:
+   - Fitts's Law: Adequate size but not overwhelming
+   - Affordance: Clear clickable appearance
+   - Gestalt: Similarity - Consistent styling
+*/
+.service-card {
+  background: white;
+  border-radius: 16px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  border: 2px solid #e5e7eb;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  min-height: 120px;
+  justify-content: center;
+}
+
+/* HCI: Feedback - Clear hover indication */
+.service-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.15);
+  border-color: #10b981;
+  background: linear-gradient(135deg, #ffffff 0%, #f0fdf7 100%);
+}
+
+.service-card:active {
+  transform: translateY(-1px);
+}
+
+.service-icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 28px;
+  transition: transform 0.3s ease;
+  /* HCI: Affordance - Icon container suggests interaction */
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
+}
+
+.service-card:hover .service-icon {
+  transform: scale(1.15) rotate(5deg);
+}
+
+.service-text {
+  width: 100%;
+}
+
+.service-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 2px;
+}
+
+.service-desc {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* === WALLET CARD === */
+/* HCI: Gestalt Figure-ground - Distinct visual separation */
+.wallet-card {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-radius: 20px;
+  padding: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 14px rgba(251, 191, 36, 0.2);
+  transition: all 0.3s ease;
+  border: 2px solid rgba(251, 191, 36, 0.2);
+}
+
+.wallet-card:hover {
+  box-shadow: 0 6px 20px rgba(251, 191, 36, 0.3);
+  transform: translateY(-2px);
+}
+
+.wallet-info {
+  flex: 1;
+}
+
+/* HCI: Visibility - Clear hierarchy with contrasting colors */
+.wallet-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #92400e;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
+}
+
+.wallet-balance {
+  font-size: 30px;
+  font-weight: 800;
+  color: #78350f;
+  margin: 6px 0;
+  letter-spacing: -1px;
+}
+
+.wallet-note {
+  font-size: 12px;
+  color: #92400e;
+  margin-top: 4px;
+  opacity: 0.9;
+}
+
+/* HCI: Fitts's Law - Adequate button size for easy targeting */
+.wallet-action {
+  background: #f59e0b;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+  /* HCI: Affordance - Button appearance */
+  min-width: 100px;
+}
+
+/* HCI: Feedback - Distinct hover state with good contrast */
+.wallet-action:hover {
+  background: #d97706;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+}
+
+.wallet-action:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+}
+
+/* === RECENT SECTION === */
+/* HCI: Gestalt Continuity - Clear visual flow */
+.recent-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.recent-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0 4px;
+  letter-spacing: -0.3px;
+}
+
+/* HCI: Affordance - Link appearance with clear interaction cue */
+.view-link {
+  background: none;
+  border: none;
+  color: #10b981;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+/* HCI: Feedback - Clear hover without visibility issues */
+.view-link:hover {
+  background: #d1fae5;
+  color: #059669;
+  transform: translateX(2px);
+}
+
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* HCI: Fitts's Law - Adequate height for easy selection */
+.recent-card {
+  background: white;
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  border: 2px solid #f1f5f9;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  min-height: 70px;
+}
+
+/* HCI: Feedback - Slide effect for directional affordance */
+.recent-card:hover {
+  transform: translateX(6px);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.12);
+  border-color: #10b981;
+  background: linear-gradient(90deg, #ffffff 0%, #f0fdf7 100%);
+}
+
+.recent-card:active {
+  transform: translateX(3px);
+}
+
+.recent-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
+}
+
+.recent-card:hover .recent-icon {
+  transform: scale(1.12);
+}
+
+.recent-text {
+  flex: 1;
+  text-align: left;
+}
+
+.recent-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 3px;
+}
+
+.recent-desc {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 380px) {
+  .hero-title {
+    font-size: 23px;
+  }
+  
+  .primary-cta {
+    font-size: 18px;
+    padding: 18px 24px;
+    min-height: 60px;
+  }
+  
+  .service-grid {
+    gap: 10px;
+  }
+  
+  .service-card {
+    padding: 14px 10px;
+    min-height: 110px;
+  }
+  
+  .wallet-balance {
+    font-size: 26px;
+  }
+}
+
+/* === ACCESSIBILITY === */
+/* HCI: Visibility - Clear focus indicators for keyboard navigation */
+.primary-cta:focus,
+.service-card:focus,
+.wallet-action:focus,
+.view-link:focus,
+.recent-card:focus {
+  outline: 3px solid #10b981;
+  outline-offset: 3px;
+}
+
+/* Ensure focus is visible but not intrusive */
+.primary-cta:focus-visible,
+.service-card:focus-visible,
+.wallet-action:focus-visible,
+.view-link:focus-visible,
+.recent-card:focus-visible {
+  outline: 3px solid #10b981;
+  outline-offset: 3px;
+}
+
+/* === SMOOTH SCROLLING === */
+.home-container {
+  scroll-behavior: smooth;
+}
+
+/* === LOADING STATES === */
+/* HCI: Feedback - Visual indication during interactions */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
